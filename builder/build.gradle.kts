@@ -1,5 +1,5 @@
 plugins {
-    id("sole.erp.backend.java-library-conventions")
+    id("soleerp.java-library-conventions")
 }
 
 dependencies {

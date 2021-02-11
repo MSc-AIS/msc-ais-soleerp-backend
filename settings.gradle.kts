@@ -1,2 +1,2 @@
-rootProject.name = "sole-erp-backend"
+rootProject.name = "msc-ais-sole-erp-backend"
 include("api", "model", "db", "builder")

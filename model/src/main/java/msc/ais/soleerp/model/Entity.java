@@ -1,4 +1,4 @@
-package sole.erp.backend.model;
+package msc.ais.soleerp.model;
 
 import java.util.List;
 

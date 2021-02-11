@@ -1,4 +1,4 @@
-package sole.erp.backend.app;
+package msc.ais.soleerp.api;
 
 public class Application {
 
