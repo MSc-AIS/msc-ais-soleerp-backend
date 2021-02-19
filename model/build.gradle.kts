@@ -1,5 +1,5 @@
 plugins {
-    id("soleerp.java-library-conventions")
+    id("msc.ais.soleerp.java-library-conventions")
 }
 
 dependencies {

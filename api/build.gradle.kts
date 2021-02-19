@@ -1,9 +1,9 @@
 plugins {
-    id("soleerp.java-application-conventions")
+    id("msc.ais.soleerp.java-application-conventions")
 }
 
 dependencies {
-
+    implementation("io.javalin:javalin:3.12.0")
 }
 
 application {

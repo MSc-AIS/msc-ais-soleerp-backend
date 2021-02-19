@@ -6,7 +6,7 @@ package msc.ais.soleerp.model;
 public class ServiceInvoice extends Invoice {
 
     @Override
-    void addItem(Item item) {
+    public void addItem(Item item) {
         if (item.getType() != ItemType.SERVICE) {
             throw new IllegalArgumentException("Message here");
         }
