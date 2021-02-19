@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -56,7 +57,9 @@ public class PostgresUserDao implements UserDao {
             user = User.builder()
                 .userId(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.USER_ID))
                 .email(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.EMAIL))
-                // .createdDate(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.DATE_CREATED))
+                .createdDate(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.DATE_CREATED, LocalDate.class))
+                .password(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.PASSWORD).toCharArray())
+                .username(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.USERNAME))
                 .build();
 
         } catch (SQLException e) {
