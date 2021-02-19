@@ -8,17 +8,12 @@ import java.util.Map;
  */
 public abstract class Invoice {
 
-    protected String title;
+    protected String id;
+    protected Transaction transaction;
+    protected User user;
     protected String row;
-    protected int number;
-    protected String customerOrderNumber;
-    protected NaturalEntity issuer;
-    protected LegalEntity customer;
-    protected LegalEntity supplier;
-    protected long issueTimestamp;
-    protected List<Item> itemList;
-    protected Map<Integer, Double> discountList;
+    protected String notes;
 
-    abstract void addItem(Item item);
+    public abstract void addItem(Item item);
 
 }

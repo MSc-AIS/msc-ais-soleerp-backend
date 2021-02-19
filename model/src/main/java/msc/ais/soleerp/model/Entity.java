@@ -7,14 +7,18 @@ import java.util.List;
  */
 public abstract class Entity {
 
-    protected EntityRole entityRole;
+    protected int id;
+    protected String name;
+    protected EntityRole role;
     protected String taxId;
     protected TaxOffice taxOffice;
     protected Address address;
     protected String phoneNumber;
     protected String email;
     protected String website;
-    protected double discountPercentage;
+    /**
+     * Entity's main activity description
+     */
     protected final String activity;
     protected List<BankAccount> bankAccountList;
 

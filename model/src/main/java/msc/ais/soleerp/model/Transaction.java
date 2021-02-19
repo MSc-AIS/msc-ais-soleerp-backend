@@ -7,6 +7,13 @@ import java.util.List;
  */
 public class Transaction {
 
-    private List<TransactionDetails> transactionDetailsList;
+    private int id;
+    private int entityId;
+    private String title;
+    private int orderNumber;
+    private long createdTimestamp;
+    private String paymentTerms;
+    private double totalPrice;
+    private int status;
 
 }
