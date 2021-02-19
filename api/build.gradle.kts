@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":db"))
     implementation("io.javalin:javalin:3.12.0")
 }
 

@@ -1,6 +1,8 @@
 package msc.ais.soleerp.model;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Arrays;
 
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 18/2/2021.
@@ -11,7 +13,7 @@ public class User {
     private String username;
     private char[] password;
     private String email;
-    private Date createdDate;
+    private LocalDate createdDate;
 
     private User(Builder builder) {
         this.id = builder.id;
@@ -31,7 +33,7 @@ public class User {
         private String username;
         private char[] password;
         private String email;
-        private Date createdDate;
+        private LocalDate createdDate;
 
         public Builder userId(int id) {
             this.id = id;
@@ -53,7 +55,7 @@ public class User {
             return this;
         }
 
-        public Builder createdDate(Date date) {
+        public Builder createdDate(LocalDate date) {
             this.createdDate = date;
             return this;
         }
@@ -61,7 +63,16 @@ public class User {
         public User build() {
             return new User(this);
         }
-
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+            "id=" + id +
+            ", username='" + username + '\'' +
+            ", password=" + Arrays.toString(password) +
+            ", email='" + email + '\'' +
+            ", createdDate=" + createdDate +
+            '}';
+    }
 }
