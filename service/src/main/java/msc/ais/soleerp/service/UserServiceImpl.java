@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
      * Sign up a user tne return a token.
      *
      * @param user The user
-     * @return The token
+     * @return The user response
      */
     @Override
     public Optional<AISUserResponse> signUp(AISUser user) {
@@ -67,13 +67,13 @@ public class UserServiceImpl implements UserService {
      *
      * @param username The username
      * @param password The password
-     * @return A new tokenId
+     * @return The user response
      */
     @Override
-    public Optional<String> singIn(String username, char[] password) {
+    public Optional<AISUserResponse> singIn(String username, char[] password) {
 
-        String tokenId = null;
         LOGGER.debug("Trying to Sign in user with username: " + username);
+        AISUserResponse response = null;
 
         try {
 
@@ -91,14 +91,14 @@ public class UserServiceImpl implements UserService {
             StoreResult tokenStoreResult = tokenDao.insertToken(token);
             LOGGER.info("Token " + token.getId() + " store result is: " + tokenStoreResult);
             if (tokenStoreResult == StoreResult.SUCCESS) {
-                tokenId = token.getId();
+                response = new AISUserResponse(user, token.getId());
             }
 
         } catch (ServiceException | DataException e) {
             LOGGER.error(e.getMessage());
         }
 
-        return Optional.ofNullable(tokenId);
+        return Optional.ofNullable(response);
     }
 
     /**

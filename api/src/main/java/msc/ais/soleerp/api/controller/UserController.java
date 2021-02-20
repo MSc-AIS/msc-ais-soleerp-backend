@@ -36,8 +36,8 @@ public class UserController {
                 Optional.ofNullable(ctx.queryParam("password"))
                     .orElseThrow(() -> new IllegalArgumentException("Unable to find password query param"))
                     .toCharArray())
-            .ifPresentOrElse(tokenId -> {
-                ctx.json(tokenId);
+            .ifPresentOrElse(response -> {
+                ctx.json(response);
                 ctx.status(HttpStatus.OK_200);
             }, () -> ctx.status(HttpStatus.NOT_FOUND_404));
 
