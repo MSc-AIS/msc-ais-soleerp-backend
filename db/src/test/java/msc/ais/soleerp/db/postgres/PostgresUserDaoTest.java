@@ -2,8 +2,10 @@ package msc.ais.soleerp.db.postgres;
 
 import msc.ais.soleerp.db.DaoFactory;
 import msc.ais.soleerp.db.UserDao;
+import msc.ais.soleerp.db.util.StoreMetadata;
 import msc.ais.soleerp.db.util.StoreResult;
 import msc.ais.soleerp.model.AISUser;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
@@ -13,20 +15,22 @@ import java.util.NoSuchElementException;
  */
 public class PostgresUserDaoTest {
 
+    @Disabled
     @Test
     public void testInsertUser() {
 
         UserDao userDao = DaoFactory.createUserDao();
         AISUser user = AISUser.builder()
-            .username("KRtester1")
+            .username("KRtester3")
             .password(new char[] {'a', 'b', 'c'})
-            .email("KRtester1@test.com")
+            .email("KRtester3@test.com")
             .build();
 
-        StoreResult storeResult = userDao.insertUser(user);
-        System.out.println("The store result is: " + storeResult);
+        StoreMetadata storeMetadata = userDao.insertUser(user);
+        System.out.println("The store result is: " + storeMetadata.getStoreResult());
     }
 
+    @Disabled
     @Test
     public void testFindUserByCredentials() {
 

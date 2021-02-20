@@ -4,6 +4,7 @@ import msc.ais.soleerp.db.DaoFactory;
 import msc.ais.soleerp.db.TokenDao;
 import msc.ais.soleerp.db.util.StoreResult;
 import msc.ais.soleerp.model.AISToken;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -13,13 +14,14 @@ import java.util.UUID;
  */
 public class TokenDaoTest {
 
+    @Disabled
     @Test
     public void insertToken() {
 
         TokenDao tokenDao = DaoFactory.createTokenDao();
         AISToken token = AISToken.builder()
             .tokenId(UUID.randomUUID().toString())
-            .userId(18)
+            .userId(19)
             .build();
 
         StoreResult storeResult = tokenDao.insertToken(token);

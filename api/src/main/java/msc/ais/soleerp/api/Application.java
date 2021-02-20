@@ -6,6 +6,7 @@ import io.javalin.Javalin;
 import io.javalin.core.JavalinConfig;
 import io.javalin.plugin.json.JavalinJackson;
 import msc.ais.soleerp.api.conf.ServerConfig;
+import msc.ais.soleerp.api.controller.UserController;
 
 public class Application {
 
@@ -14,10 +15,11 @@ public class Application {
         Javalin app = Javalin.create(JavalinConfig::enableCorsForAllOrigins)
             .start(ServerConfig.getPort());
 
-        final String baseURL = "/msc/ais/weather/api/";
+        final String baseURL = "/msc/ais/soleerp/api/";
 
         app.get(baseURL, ctx -> ctx.result("Server Is Up and Running..."));
-        // app.get(baseURL + "/forecast/current", ForecastController.getCurrentWeatherForecastResponseByIP);
+
+        app.post(baseURL + "/user/signup", UserController.signUpUser);
 
 
         ObjectMapper mapper = new ObjectMapper();

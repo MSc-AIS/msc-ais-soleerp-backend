@@ -4,6 +4,7 @@ import msc.ais.soleerp.db.DBCPDataSource;
 import msc.ais.soleerp.db.UserDao;
 import msc.ais.soleerp.db.jooq.generated.tables.AppUser;
 import msc.ais.soleerp.db.jooq.generated.tables.records.AppUserRecord;
+import msc.ais.soleerp.db.util.StoreMetadata;
 import msc.ais.soleerp.db.util.StoreResult;
 import msc.ais.soleerp.db.util.StoreResultExtractor;
 import msc.ais.soleerp.model.AISUser;
@@ -28,9 +29,10 @@ public class PostgresUserDao implements UserDao, StoreResultExtractor {
     private static final Logger LOGGER = LoggerFactory.getLogger(PostgresUserDao.class);
 
     @Override
-    public StoreResult insertUser(AISUser user) {
+    public StoreMetadata insertUser(AISUser user) {
 
         int storeResult = -1;
+        int autoGenId = -1;
 
         try (Connection connection = DBCPDataSource.getConnection()) {
 
@@ -41,14 +43,13 @@ public class PostgresUserDao implements UserDao, StoreResultExtractor {
             appUserRecord.setEmail(user.getEmail());
             appUserRecord.setPassword(String.valueOf(user.getPassword()));
             storeResult = appUserRecord.store();
-
-            LOGGER.info("User id is: " + appUserRecord.getUserId());
+            autoGenId = appUserRecord.getUserId();
 
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
 
-        return extractStoreResult(storeResult);
+        return extractStoreMetadata(storeResult, autoGenId);
     }
 
     @Override

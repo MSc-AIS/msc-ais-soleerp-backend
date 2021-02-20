@@ -21,4 +21,8 @@ public interface StoreResultExtractor {
         }
     }
 
+    default StoreMetadata extractStoreMetadata(int storeResult, int autoGenId) {
+        return StoreMetadata.of(autoGenId, extractStoreResult(storeResult));
+    }
+
 }
