@@ -1,6 +1,7 @@
 package msc.ais.soleerp.service;
 
 import msc.ais.soleerp.model.AISUser;
+import msc.ais.soleerp.model.response.AISUserResponse;
 import msc.ais.soleerp.service.exception.ServiceException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -22,10 +23,10 @@ public class UserServiceTest {
             .email("KRtester3@test.com")
             .build();
 
-        String tokenId = userService.signUp(user)
+        AISUserResponse response = userService.signUp(user)
             .orElseThrow(() -> new ServiceException("Error... Failed to signUp user: " + user.getEmail()));
 
-        System.out.println("The created token id is: " + tokenId);
+        System.out.println("The created token id is: " + response.getTokenId());
     }
 
 }

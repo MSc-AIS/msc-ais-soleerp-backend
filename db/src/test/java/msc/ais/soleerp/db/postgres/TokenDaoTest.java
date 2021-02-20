@@ -16,7 +16,7 @@ public class TokenDaoTest {
 
     @Disabled
     @Test
-    public void insertToken() {
+    public void insertToken() throws Exception {
 
         TokenDao tokenDao = DaoFactory.createTokenDao();
         AISToken token = AISToken.builder()

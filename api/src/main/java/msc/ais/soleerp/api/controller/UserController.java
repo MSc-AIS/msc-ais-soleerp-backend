@@ -18,14 +18,18 @@ public class UserController {
                     .username(request.username)
                     .email(request.email)
                     .password(request.password.toCharArray())
+                    .firstName(request.firstname)
+                    .lastName(request.lastname)
                     .build())
-                .ifPresentOrElse(tokenId -> {
-                    ctx.json(tokenId);
+                .ifPresentOrElse(response -> {
+                    ctx.json(response);
                     ctx.status(HttpStatus.CREATED_201);
                 }, () -> ctx.status(HttpStatus.BAD_REQUEST_400));
         };
 
     static class UserRequest {
+        public String firstname;
+        public String lastname;
         public String username;
         public String email;
         public String password;

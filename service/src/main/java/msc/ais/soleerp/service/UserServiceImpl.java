@@ -3,10 +3,12 @@ package msc.ais.soleerp.service;
 import msc.ais.soleerp.db.DaoFactory;
 import msc.ais.soleerp.db.TokenDao;
 import msc.ais.soleerp.db.UserDao;
-import msc.ais.soleerp.db.util.StoreMetadata;
+import msc.ais.soleerp.db.exception.DataException;
 import msc.ais.soleerp.db.util.StoreResult;
 import msc.ais.soleerp.model.AISToken;
 import msc.ais.soleerp.model.AISUser;
+import msc.ais.soleerp.model.response.AISUserResponse;
+import msc.ais.soleerp.service.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,46 +29,37 @@ public class UserServiceImpl implements UserService {
      * @return The token
      */
     @Override
-    public Optional<String> signUp(AISUser user) {
+    public Optional<AISUserResponse> signUp(AISUser user) {
 
         LOGGER.info("Trying to SignUp user: " + user.getEmail());
 
         UserDao userDao = DaoFactory.createUserDao();
-        StoreMetadata userStoreMetadata = userDao.insertUser(user);
-        String tokenId = null;
+        AISUserResponse response = null;
 
-        switch (userStoreMetadata.getStoreResult()) {
+        try {
 
-            case SUCCESS:
+            AISUser aisUserResult = userDao.insertUser(user)
+                .orElseThrow(() -> new ServiceException(
+                    "Error... User: " + user.getEmail() + " failed to be inserted in db."));
 
-                LOGGER.info("User: " + user.getEmail() + " inserted successfully!!!");
-                TokenDao tokenDao = DaoFactory.createTokenDao();
-                String tempTokenId = UUID.randomUUID().toString();
-                AISToken token = AISToken.builder()
-                    .userId(userStoreMetadata.getAutoGenId())
-                    .tokenId(tempTokenId)
-                    .build();
+            LOGGER.info("User: " + user.getEmail() + " inserted successfully.");
+            TokenDao tokenDao = DaoFactory.createTokenDao();
+            AISToken token = AISToken.builder()
+                .userId(aisUserResult.getId())
+                .tokenId(UUID.randomUUID().toString())
+                .build();
 
-                StoreResult tokenStoreResult = tokenDao.insertToken(token);
-                // set tokenId only if the token inserted successfully in db
-                if (tokenStoreResult == StoreResult.SUCCESS) {
-                    tokenId = tempTokenId;
-                }
-                LOGGER.info("Token " + tempTokenId + " store result is: " + tokenStoreResult);
-                break;
+            StoreResult tokenStoreResult = tokenDao.insertToken(token);
+            LOGGER.info("Token " + token.getId() + " store result is: " + tokenStoreResult);
+            if (tokenStoreResult == StoreResult.SUCCESS) {
+                response = new AISUserResponse(aisUserResult, token.getId());
+            }
 
-            case UNNECESSARY:
-
-                LOGGER.info("User: " + user.getEmail() + " already stored...");
-                break;
-
-            default:
-
-                LOGGER.info("User: " + user.getEmail() + " failed to be inserted...");
-
+        } catch (ServiceException | DataException e) {
+            LOGGER.error(e.getMessage());
         }
 
-        return Optional.ofNullable(tokenId);
+        return Optional.ofNullable(response);
     }
 
     @Override

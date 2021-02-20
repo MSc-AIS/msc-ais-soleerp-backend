@@ -9,6 +9,8 @@ import java.util.Arrays;
 public class AISUser {
 
     private final int id;
+    private final String firstName;
+    private final String lastName;
     private final String username;
     private final char[] password;
     private final String email;
@@ -19,6 +21,8 @@ public class AISUser {
         this.username = builder.username;
         this.password = builder.password;
         this.email = builder.email;
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
         this.createdDate = builder.createdDate;
     }
 
@@ -42,6 +46,14 @@ public class AISUser {
         return createdDate;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -51,6 +63,8 @@ public class AISUser {
         private int id;
         private String username;
         private char[] password;
+        private String firstName;
+        private String lastName;
         private String email;
         private LocalDate createdDate;
 
@@ -74,6 +88,16 @@ public class AISUser {
             return this;
         }
 
+        public Builder firstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder lastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
         public Builder createdDate(LocalDate date) {
             this.createdDate = date;
             return this;
@@ -86,8 +110,10 @@ public class AISUser {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "AISUser{" +
             "id=" + id +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
             ", username='" + username + '\'' +
             ", password=" + Arrays.toString(password) +
             ", email='" + email + '\'' +

@@ -24,7 +24,7 @@ public class Application {
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-
+        mapper.findAndRegisterModules();
         JavalinJackson.configure(mapper);
     }
 }

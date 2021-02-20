@@ -1,7 +1,5 @@
 package msc.ais.soleerp.db;
 
-import msc.ais.soleerp.db.util.StoreMetadata;
-import msc.ais.soleerp.db.util.StoreResult;
 import msc.ais.soleerp.model.AISUser;
 
 import java.util.Optional;
@@ -11,7 +9,7 @@ import java.util.Optional;
  */
 public interface UserDao {
 
-    StoreMetadata insertUser(AISUser user);
+    Optional<AISUser> insertUser(AISUser user);
 
     int deleteUserById(int id);
 

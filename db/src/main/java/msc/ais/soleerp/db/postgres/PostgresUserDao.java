@@ -4,13 +4,10 @@ import msc.ais.soleerp.db.DBCPDataSource;
 import msc.ais.soleerp.db.UserDao;
 import msc.ais.soleerp.db.jooq.generated.tables.AppUser;
 import msc.ais.soleerp.db.jooq.generated.tables.records.AppUserRecord;
-import msc.ais.soleerp.db.util.StoreMetadata;
 import msc.ais.soleerp.db.util.StoreResult;
 import msc.ais.soleerp.db.util.StoreResultExtractor;
 import msc.ais.soleerp.model.AISUser;
-import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.SQLDialect;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,27 +26,41 @@ public class PostgresUserDao implements UserDao, StoreResultExtractor {
     private static final Logger LOGGER = LoggerFactory.getLogger(PostgresUserDao.class);
 
     @Override
-    public StoreMetadata insertUser(AISUser user) {
+    public Optional<AISUser> insertUser(AISUser user) {
 
-        int storeResult = -1;
-        int autoGenId = -1;
+        AISUser aisUserResult = null;
 
         try (Connection connection = DBCPDataSource.getConnection()) {
 
             DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
 
-            AppUserRecord appUserRecord = context.newRecord(AppUser.APP_USER);
-            appUserRecord.setUsername(user.getUsername());
-            appUserRecord.setEmail(user.getEmail());
-            appUserRecord.setPassword(String.valueOf(user.getPassword()));
-            storeResult = appUserRecord.store();
-            autoGenId = appUserRecord.getUserId();
+            Record2<Integer, LocalDate> record = context.insertInto(AppUser.APP_USER,
+                AppUser.APP_USER.USERNAME,
+                AppUser.APP_USER.EMAIL,
+                AppUser.APP_USER.FIRST_NAME,
+                AppUser.APP_USER.LAST_NAME,
+                AppUser.APP_USER.PASSWORD)
+                .values(user.getUsername(),
+                    user.getEmail(),
+                    user.getFirstName(),
+                    user.getLastName(),
+                    String.valueOf(user.getPassword()))
+                .returningResult(AppUser.APP_USER.USER_ID, AppUser.APP_USER.DATE_CREATED)
+                .fetchOne();
+
+            aisUserResult = AISUser.builder()
+                .userId(Objects.requireNonNull(record).getValue(AppUser.APP_USER.USER_ID))
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .createdDate(Objects.requireNonNull(record).getValue(AppUser.APP_USER.DATE_CREATED, LocalDate.class))
+                .build();
 
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
 
-        return extractStoreMetadata(storeResult, autoGenId);
+        return Optional.ofNullable(aisUserResult);
     }
 
     @Override

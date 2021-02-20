@@ -2,8 +2,6 @@ package msc.ais.soleerp.db.postgres;
 
 import msc.ais.soleerp.db.DaoFactory;
 import msc.ais.soleerp.db.UserDao;
-import msc.ais.soleerp.db.util.StoreMetadata;
-import msc.ais.soleerp.db.util.StoreResult;
 import msc.ais.soleerp.model.AISUser;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -19,15 +17,21 @@ public class PostgresUserDaoTest {
     @Test
     public void testInsertUser() {
 
+        int number = 7;
+
         UserDao userDao = DaoFactory.createUserDao();
         AISUser user = AISUser.builder()
-            .username("KRtester3")
+            .username("KRtester" + number)
             .password(new char[] {'a', 'b', 'c'})
-            .email("KRtester3@test.com")
+            .firstName("KRtester" + number)
+            .lastName("KRtester" + number)
+            .email("KRteste" + number + "@test.com")
             .build();
 
-        StoreMetadata storeMetadata = userDao.insertUser(user);
-        System.out.println("The store result is: " + storeMetadata.getStoreResult());
+        AISUser aisUserResult = userDao.insertUser(user)
+            .orElseThrow(() -> new NoSuchElementException("Error... Empty optional!"));
+
+        System.out.println("The user result is: " + aisUserResult.toString());
     }
 
     @Disabled
@@ -35,8 +39,12 @@ public class PostgresUserDaoTest {
     public void testFindUserByCredentials() {
 
         UserDao userDao = DaoFactory.createUserDao();
-        AISUser user = userDao.findUserByCredentials("rduesberryb@163.com",
-            new char[] {'b', 'O', '3', 'i', 'z', '8', '5', 'f', '9', 'V', 'a'})
+//        AISUser user = userDao.findUserByCredentials("rduesberryb@163.com",
+//            new char[] {'b', 'O', '3', 'i', 'z', '8', '5', 'f', '9', 'V', 'a'})
+//            .orElseThrow(() -> new NoSuchElementException("Error... Empty optional!"));
+
+        AISUser user = userDao.findUserByCredentials("KRteste6@test.com",
+            new char[] {'a', 'b', 'c'})
             .orElseThrow(() -> new NoSuchElementException("Error... Empty optional!"));
 
         System.out.println(user.toString());

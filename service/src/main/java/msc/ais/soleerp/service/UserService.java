@@ -1,6 +1,7 @@
 package msc.ais.soleerp.service;
 
 import msc.ais.soleerp.model.AISUser;
+import msc.ais.soleerp.model.response.AISUserResponse;
 
 import java.util.Optional;
 
@@ -9,7 +10,7 @@ import java.util.Optional;
  */
 public interface UserService {
 
-    Optional<String> signUp(AISUser user);
+    Optional<AISUserResponse> signUp(AISUser user);
 
     Optional<String> singIn(String email, char[] password);
 
