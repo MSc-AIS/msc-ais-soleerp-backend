@@ -62,13 +62,64 @@ public class UserServiceImpl implements UserService {
         return Optional.ofNullable(response);
     }
 
+    /**
+     * Sign in a user by credentials.
+     *
+     * @param username The username
+     * @param password The password
+     * @return A new tokenId
+     */
     @Override
-    public Optional<String> singIn(String email, char[] password) {
-        return Optional.empty();
+    public Optional<String> singIn(String username, char[] password) {
+
+        String tokenId = null;
+        LOGGER.debug("Trying to Sign in user with username: " + username);
+
+        try {
+
+            UserDao userDao = DaoFactory.createUserDao();
+            AISUser user = userDao.findUserByCredentials(username, password)
+                .orElseThrow(() -> new ServiceException(
+                    "Error... Cannot find user with username: "
+                        + username + " and password: " + String.valueOf(password)));
+
+            TokenDao tokenDao = DaoFactory.createTokenDao();
+            AISToken token = AISToken.builder()
+                .userId(user.getId())
+                .tokenId(UUID.randomUUID().toString())
+                .build();
+            StoreResult tokenStoreResult = tokenDao.insertToken(token);
+            LOGGER.info("Token " + token.getId() + " store result is: " + tokenStoreResult);
+            if (tokenStoreResult == StoreResult.SUCCESS) {
+                tokenId = token.getId();
+            }
+
+        } catch (ServiceException | DataException e) {
+            LOGGER.error(e.getMessage());
+        }
+
+        return Optional.ofNullable(tokenId);
     }
 
+    /**
+     * Sign out a user by its token.
+     *
+     * @param tokenId The token UUID
+     * @return True for successful deletion, false otherwise
+     */
     @Override
     public boolean signOut(String tokenId) {
-        return false;
+
+        TokenDao tokenDao = DaoFactory.createTokenDao();
+        boolean isDeleted = false;
+        int rowsAffected = tokenDao.deleteTokenById(tokenId);
+        if (rowsAffected == 1) {
+            isDeleted = true;
+            LOGGER.debug("Token with id: " + tokenId + " deleted successfully.");
+        }
+
+        LOGGER.debug("Trying to delete token with id: " + tokenId);
+
+        return isDeleted;
     }
 }

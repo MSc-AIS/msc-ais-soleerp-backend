@@ -12,7 +12,7 @@ public interface UserService {
 
     Optional<AISUserResponse> signUp(AISUser user);
 
-    Optional<String> singIn(String email, char[] password);
+    Optional<String> singIn(String username, char[] password);
 
     boolean signOut(String tokenId);
 

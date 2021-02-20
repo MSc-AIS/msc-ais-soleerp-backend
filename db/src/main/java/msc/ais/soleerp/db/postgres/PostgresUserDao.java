@@ -74,7 +74,7 @@ public class PostgresUserDao implements UserDao, StoreResultExtractor {
     }
 
     @Override
-    public Optional<AISUser> findUserByCredentials(String email, char[] password) {
+    public Optional<AISUser> findUserByCredentials(String username, char[] password) {
 
         AISUser user = null;
 
@@ -84,7 +84,7 @@ public class PostgresUserDao implements UserDao, StoreResultExtractor {
 
             Record AppUserRecord = context
                 .selectFrom("app_user")
-                .where(AppUser.APP_USER.EMAIL.eq(email))
+                .where(AppUser.APP_USER.USERNAME.eq(username))
                 .and(AppUser.APP_USER.PASSWORD.eq(String.valueOf(password)))
                 .fetchOne();
 
@@ -92,8 +92,10 @@ public class PostgresUserDao implements UserDao, StoreResultExtractor {
                 .userId(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.USER_ID))
                 .email(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.EMAIL))
                 .createdDate(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.DATE_CREATED, LocalDate.class))
-                .password(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.PASSWORD).toCharArray())
-                .username(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.USERNAME))
+                // .password(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.PASSWORD).toCharArray())
+                .firstName(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.FIRST_NAME))
+                .lastName(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.LAST_NAME))
+                // .username(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.USERNAME))
                 .build();
 
         } catch (SQLException e) {

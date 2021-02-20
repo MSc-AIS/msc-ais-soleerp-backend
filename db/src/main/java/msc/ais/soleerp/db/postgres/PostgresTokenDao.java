@@ -61,6 +61,21 @@ public class PostgresTokenDao implements TokenDao, StoreResultExtractor {
 
     @Override
     public int deleteTokenById(String id) {
-        return 0;
+
+        int deleteResult = -1;
+
+        try (Connection connection = DBCPDataSource.getConnection()) {
+
+            DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
+
+            deleteResult = context.delete(Token.TOKEN)
+                .where(Token.TOKEN.TOKEN_.eq(id))
+                .execute();
+
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return deleteResult;
     }
 }

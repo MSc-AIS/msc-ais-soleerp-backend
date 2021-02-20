@@ -20,7 +20,8 @@ public class Application {
         app.get(baseURL, ctx -> ctx.result("Server Is Up and Running..."));
 
         app.post(baseURL + "/user/signup", UserController.signUpUser);
-
+        app.get(baseURL + "/user/signin", UserController.signInUser);
+        app.delete(baseURL + "/user/signout", UserController.signOutUser);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
