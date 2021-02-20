@@ -3,7 +3,10 @@ package msc.ais.soleerp.db.postgres;
 import msc.ais.soleerp.db.DBCPDataSource;
 import msc.ais.soleerp.db.UserDao;
 import msc.ais.soleerp.db.jooq.generated.tables.AppUser;
-import msc.ais.soleerp.model.User;
+import msc.ais.soleerp.db.jooq.generated.tables.records.AppUserRecord;
+import msc.ais.soleerp.db.util.StoreResult;
+import msc.ais.soleerp.db.util.StoreResultExtractor;
+import msc.ais.soleerp.model.AISUser;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.SQLDialect;
@@ -20,13 +23,32 @@ import java.util.Optional;
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 19/2/21.
  */
-public class PostgresUserDao implements UserDao {
+public class PostgresUserDao implements UserDao, StoreResultExtractor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PostgresUserDao.class);
 
     @Override
-    public int insertUser(User user) {
-        return 0;
+    public StoreResult insertUser(AISUser user) {
+
+        int storeResult = -1;
+
+        try (Connection connection = DBCPDataSource.getConnection()) {
+
+            DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
+
+            AppUserRecord appUserRecord = context.newRecord(AppUser.APP_USER);
+            appUserRecord.setUsername(user.getUsername());
+            appUserRecord.setEmail(user.getEmail());
+            appUserRecord.setPassword(String.valueOf(user.getPassword()));
+            storeResult = appUserRecord.store();
+
+            LOGGER.info("User id is: " + appUserRecord.getUserId());
+
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return extractStoreResult(storeResult);
     }
 
     @Override
@@ -40,9 +62,9 @@ public class PostgresUserDao implements UserDao {
     }
 
     @Override
-    public Optional<User> findUserByCredentials(String email, char[] password) {
+    public Optional<AISUser> findUserByCredentials(String email, char[] password) {
 
-        User user = null;
+        AISUser user = null;
 
         try (Connection connection = DBCPDataSource.getConnection()) {
 
@@ -54,7 +76,7 @@ public class PostgresUserDao implements UserDao {
                 .and(AppUser.APP_USER.PASSWORD.eq(String.valueOf(password)))
                 .fetchOne();
 
-            user = User.builder()
+            user = AISUser.builder()
                 .userId(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.USER_ID))
                 .email(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.EMAIL))
                 .createdDate(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.DATE_CREATED, LocalDate.class))

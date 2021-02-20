@@ -2,7 +2,8 @@ package msc.ais.soleerp.db.postgres;
 
 import msc.ais.soleerp.db.DaoFactory;
 import msc.ais.soleerp.db.UserDao;
-import msc.ais.soleerp.model.User;
+import msc.ais.soleerp.db.util.StoreResult;
+import msc.ais.soleerp.model.AISUser;
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
@@ -13,14 +14,26 @@ import java.util.NoSuchElementException;
 public class PostgresUserDaoTest {
 
     @Test
-    public void testFindUserByCredentials() throws Exception {
+    public void testInsertUser() {
 
         UserDao userDao = DaoFactory.createUserDao();
-        User user = userDao.findUserByCredentials("rduesberryb@163.com",
+        AISUser user = AISUser.builder()
+            .username("KRtester1")
+            .password(new char[] {'a', 'b', 'c'})
+            .email("KRtester1@test.com")
+            .build();
+
+        StoreResult storeResult = userDao.insertUser(user);
+        System.out.println("The store result is: " + storeResult);
+    }
+
+    @Test
+    public void testFindUserByCredentials() {
+
+        UserDao userDao = DaoFactory.createUserDao();
+        AISUser user = userDao.findUserByCredentials("rduesberryb@163.com",
             new char[] {'b', 'O', '3', 'i', 'z', '8', '5', 'f', '9', 'V', 'a'})
             .orElseThrow(() -> new NoSuchElementException("Error... Empty optional!"));
-
-        // bO3iz85f9Va
 
         System.out.println(user.toString());
     }

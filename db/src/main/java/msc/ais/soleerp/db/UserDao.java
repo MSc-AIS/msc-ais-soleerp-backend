@@ -1,6 +1,7 @@
 package msc.ais.soleerp.db;
 
-import msc.ais.soleerp.model.User;
+import msc.ais.soleerp.db.util.StoreResult;
+import msc.ais.soleerp.model.AISUser;
 
 import java.util.Optional;
 
@@ -9,11 +10,11 @@ import java.util.Optional;
  */
 public interface UserDao {
 
-    int insertUser(User user);
+    StoreResult insertUser(AISUser user);
 
     int deleteUserById(int id);
 
     int findUserById(int id);
 
-    Optional<User> findUserByCredentials(String email, char[] password);
+    Optional<AISUser> findUserByCredentials(String email, char[] password);
 }

@@ -9,7 +9,7 @@ public abstract class Invoice {
 
     protected String id;
     protected Transaction transaction;
-    protected User user;
+    protected AISUser user;
     protected String row;
     protected String notes;
 

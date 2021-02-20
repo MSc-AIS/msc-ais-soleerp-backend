@@ -1,26 +1,45 @@
 package msc.ais.soleerp.model;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Arrays;
 
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 18/2/2021.
  */
-public class User {
+public class AISUser {
 
-    private int id;
-    private String username;
-    private char[] password;
-    private String email;
-    private LocalDate createdDate;
+    private final int id;
+    private final String username;
+    private final char[] password;
+    private final String email;
+    private final LocalDate createdDate;
 
-    private User(Builder builder) {
+    private AISUser(Builder builder) {
         this.id = builder.id;
         this.username = builder.username;
         this.password = builder.password;
         this.email = builder.email;
         this.createdDate = builder.createdDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public char[] getPassword() {
+        return password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public LocalDate getCreatedDate() {
+        return createdDate;
     }
 
     public static Builder builder() {
@@ -60,8 +79,8 @@ public class User {
             return this;
         }
 
-        public User build() {
-            return new User(this);
+        public AISUser build() {
+            return new AISUser(this);
         }
     }
 
