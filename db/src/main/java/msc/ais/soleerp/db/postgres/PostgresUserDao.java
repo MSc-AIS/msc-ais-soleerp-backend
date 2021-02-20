@@ -2,6 +2,7 @@ package msc.ais.soleerp.db.postgres;
 
 import msc.ais.soleerp.db.DBCPDataSource;
 import msc.ais.soleerp.db.UserDao;
+import msc.ais.soleerp.db.exception.DataException;
 import msc.ais.soleerp.db.jooq.generated.tables.AppUser;
 import msc.ais.soleerp.db.jooq.generated.tables.records.AppUserRecord;
 import msc.ais.soleerp.db.util.StoreResult;
@@ -83,10 +84,11 @@ public class PostgresUserDao implements UserDao, StoreResultExtractor {
             DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
 
             Record AppUserRecord = context
-                .selectFrom("app_user")
+                .selectFrom(AppUser.APP_USER)
                 .where(AppUser.APP_USER.USERNAME.eq(username))
                 .and(AppUser.APP_USER.PASSWORD.eq(String.valueOf(password)))
-                .fetchOne();
+                .fetchOptional()
+                .orElseThrow(() -> new DataException("Error... Unable to find user for given credentials."));
 
             user = AISUser.builder()
                 .userId(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.USER_ID))
@@ -100,6 +102,8 @@ public class PostgresUserDao implements UserDao, StoreResultExtractor {
 
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
+        } catch (DataException e) {
+            LOGGER.error(e.getMessage());
         }
 
         return Optional.ofNullable(user);

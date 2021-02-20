@@ -1,0 +1,97 @@
+html {
+    height: 100%;
+    margin-right: 50px;
+    margin-left: 50px;
+}
+
+* {
+    font-family: 'source-sans', sans-serif;
+}
+
+table.collapsed-border {
+    border-collapse: collapse;
+}
+
+td.upper-border, table.upper-border {
+    border-top: 5px groove #606060;
+}
+
+table.grey-text-all {
+    color: #606060;
+}
+
+td.center-all, table.center-all {
+    text-align: center;
+}
+
+td.right-all {
+    text-align: right;
+}
+
+td.left-all {
+    text-align: left;
+}
+
+table.go-right {
+    margin-left: auto;
+}
+
+div.width-full, table.width-full {
+    width: 100%;
+}
+
+div.bold-all, p.bold-all, tr.bold-all, td.bold-all {
+    font-weight: bold;
+}
+
+div.small-padding {
+    padding: 8px;
+}
+
+table.margin-top-down {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+td.padding-right {
+    padding-right: 25px;
+}
+
+td.padding-left {
+    padding-left: 25px;
+}
+
+div.color-blue {
+    color: cornflowerblue;
+}
+
+div.font-size-10 {
+    display: inline;
+    border: 0;
+    font-size: 14px;
+}
+
+table.font-size-10, p.font-size-10 {
+    font-size: 14px;
+}
+
+td.font-size-9 {
+    font-size: 14px;
+}
+
+td.font-size-12 {
+    font-size: 16px;
+}
+
+div.bottom-all {
+    position: absolute;
+    bottom: 0;
+}
+
+p.font-size-16 {
+    font-size: 16px;
+}
+
+p.font-size-18 {
+    font-size: 18px;
+}

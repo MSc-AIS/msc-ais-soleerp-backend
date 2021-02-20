@@ -43,7 +43,7 @@ public class PostgresUserDaoTest {
 //            new char[] {'b', 'O', '3', 'i', 'z', '8', '5', 'f', '9', 'V', 'a'})
 //            .orElseThrow(() -> new NoSuchElementException("Error... Empty optional!"));
 
-        AISUser user = userDao.findUserByCredentials("KRteste6@test.com",
+        AISUser user = userDao.findUserByCredentials("KRtester6",
             new char[] {'a', 'b', 'c'})
             .orElseThrow(() -> new NoSuchElementException("Error... Empty optional!"));
 
