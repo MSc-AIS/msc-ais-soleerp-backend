@@ -67,21 +67,19 @@ public interface ModelExtractor {
 
     default EntityRole extractEntityRole(String role) {
 
-//        switch (role) {
-//
-//            case "C": // stands for customer
-//                return EntityRole.CUSTOMER;
-//
-//            case "S": // stands for supplier
-//                return EntityRole.SUPPLIER;
-//
-//            case "B": // stands for both
-//                return EntityRole.CUSTOMER_SUPPLIER;
-//        }
-//
-//        throw new IllegalStateException("Error... Unable to specify entity role.");
+        switch (role) {
 
-        return EntityRole.CUSTOMER;
+            case "C": // stands for customer
+                return EntityRole.CUSTOMER;
+
+            case "S": // stands for supplier
+                return EntityRole.SUPPLIER;
+
+            case "B": // stands for both
+                return EntityRole.CUSTOMER_SUPPLIER;
+        }
+
+        throw new IllegalStateException("Error... Unable to specify entity role.");
     }
 
 }
