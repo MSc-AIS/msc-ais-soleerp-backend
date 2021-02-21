@@ -49,7 +49,7 @@ public class Address {
         return new Builder();
     }
 
-    public static class Builder {
+    public static final class Builder {
 
         private String street;
         private String streetNumber;
@@ -61,33 +61,33 @@ public class Address {
         public Builder() {
         }
 
-        public Builder street(String val) {
-            street = val;
+        public Builder street(String street) {
+            this.street = street;
             return this;
         }
 
-        public Builder streetNumber(String val) {
-            streetNumber = val;
+        public Builder streetNumber(String streetNumber) {
+            this.streetNumber = streetNumber;
             return this;
         }
 
-        public Builder postalCode(String val) {
-            postalCode = val;
+        public Builder postalCode(String postalCode) {
+            this.postalCode = postalCode;
             return this;
         }
 
-        public Builder city(String val) {
-            city = val;
+        public Builder city(String city) {
+            this.city = city;
             return this;
         }
 
-        public Builder area(String val) {
-            area = val;
+        public Builder area(String area) {
+            this.area = area;
             return this;
         }
 
-        public Builder country(String val) {
-            country = val;
+        public Builder country(String country) {
+            this.country = country;
             return this;
         }
 

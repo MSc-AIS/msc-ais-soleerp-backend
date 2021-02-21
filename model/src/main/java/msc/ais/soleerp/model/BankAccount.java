@@ -5,9 +5,70 @@ package msc.ais.soleerp.model;
  */
 public class BankAccount {
 
-    private String bankName;
-    private String swiftCode;
-    private String iban;
-    private boolean preferable;
+    private final String bankName;
+    private final String swiftCode;
+    private final String iban;
+    private final boolean preferable;
 
+    private BankAccount(Builder builder) {
+        bankName = builder.bankName;
+        swiftCode = builder.swiftCode;
+        iban = builder.iban;
+        preferable = builder.preferable;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public String getSwiftCode() {
+        return swiftCode;
+    }
+
+    public String getIban() {
+        return iban;
+    }
+
+    public boolean isPreferable() {
+        return preferable;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+
+        private String bankName;
+        private String swiftCode;
+        private String iban;
+        private boolean preferable;
+
+        public Builder() {
+        }
+
+        public Builder bankName(String bankName) {
+            this.bankName = bankName;
+            return this;
+        }
+
+        public Builder swiftCode(String swiftCode) {
+            this.swiftCode = swiftCode;
+            return this;
+        }
+
+        public Builder iban(String iban) {
+            this.iban = iban;
+            return this;
+        }
+
+        public Builder preferable(boolean preferable) {
+            this.preferable = preferable;
+            return this;
+        }
+
+        public BankAccount build() {
+            return new BankAccount(this);
+        }
+    }
 }
