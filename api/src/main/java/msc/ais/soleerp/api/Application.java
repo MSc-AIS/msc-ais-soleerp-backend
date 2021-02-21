@@ -6,6 +6,7 @@ import io.javalin.Javalin;
 import io.javalin.core.JavalinConfig;
 import io.javalin.plugin.json.JavalinJackson;
 import msc.ais.soleerp.api.conf.ServerConfig;
+import msc.ais.soleerp.api.controller.EntityController;
 import msc.ais.soleerp.api.controller.UserController;
 
 public class Application {
@@ -22,6 +23,8 @@ public class Application {
         app.post(baseURL + "/user/signup", UserController.signUpUser);
         app.get(baseURL + "/user/signin", UserController.signInUser);
         app.delete(baseURL + "/user/signout", UserController.signOutUser);
+
+        app.get(baseURL + "/entities", EntityController.getEntitiesByUserTokenId);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);

@@ -16,4 +16,8 @@ public class ServiceFactory {
         return new TransformationServiceImpl();
     }
 
+    public static EntityService createEntityService() {
+        return new EntityServiceImpl();
+    }
+
 }

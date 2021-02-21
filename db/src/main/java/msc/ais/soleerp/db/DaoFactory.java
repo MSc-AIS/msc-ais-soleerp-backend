@@ -1,5 +1,6 @@
 package msc.ais.soleerp.db;
 
+import msc.ais.soleerp.db.postgres.PostgresEntityDao;
 import msc.ais.soleerp.db.postgres.PostgresTokenDao;
 import msc.ais.soleerp.db.postgres.PostgresUserDao;
 
@@ -14,6 +15,10 @@ public class DaoFactory {
 
     public static TokenDao createTokenDao() {
         return new PostgresTokenDao();
+    }
+
+    public static EntityDao createEntityDao() {
+        return new PostgresEntityDao();
     }
 
 }

@@ -83,7 +83,7 @@ public class PostgresUserDao implements UserDao, StoreResultExtractor {
 
             DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
 
-            Record AppUserRecord = context
+            Record appUserRecord = context
                 .selectFrom(AppUser.APP_USER)
                 .where(AppUser.APP_USER.USERNAME.eq(username))
                 .and(AppUser.APP_USER.PASSWORD.eq(String.valueOf(password)))
@@ -91,13 +91,13 @@ public class PostgresUserDao implements UserDao, StoreResultExtractor {
                 .orElseThrow(() -> new DataException("Error... Unable to find user for given credentials."));
 
             user = AISUser.builder()
-                .userId(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.USER_ID))
-                .email(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.EMAIL))
-                .createdDate(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.DATE_CREATED, LocalDate.class))
-                // .password(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.PASSWORD).toCharArray())
-                .firstName(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.FIRST_NAME))
-                .lastName(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.LAST_NAME))
-                // .username(Objects.requireNonNull(AppUserRecord).getValue(AppUser.APP_USER.USERNAME))
+                .userId(Objects.requireNonNull(appUserRecord).getValue(AppUser.APP_USER.USER_ID))
+                .email(Objects.requireNonNull(appUserRecord).getValue(AppUser.APP_USER.EMAIL))
+                .createdDate(Objects.requireNonNull(appUserRecord).getValue(AppUser.APP_USER.DATE_CREATED, LocalDate.class))
+                // .password(Objects.requireNonNull(appUserRecord).getValue(AppUser.APP_USER.PASSWORD).toCharArray())
+                .firstName(Objects.requireNonNull(appUserRecord).getValue(AppUser.APP_USER.FIRST_NAME))
+                .lastName(Objects.requireNonNull(appUserRecord).getValue(AppUser.APP_USER.LAST_NAME))
+                // .username(Objects.requireNonNull(appUserRecord).getValue(AppUser.APP_USER.USERNAME))
                 .build();
 
         } catch (SQLException e) {
