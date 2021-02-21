@@ -50,4 +50,12 @@ public class PostgresUserDaoTest {
         System.out.println(user.toString());
     }
 
+    @Disabled
+    @Test
+    public void testFindUserIdByTokenId() {
+
+        UserDao userDao = DaoFactory.createUserDao();
+        System.out.println(userDao.findUserIdByTokenId("dawdaw"));
+    }
+
 }

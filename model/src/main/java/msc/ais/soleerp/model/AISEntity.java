@@ -22,7 +22,7 @@ public abstract class AISEntity {
      * Entity's main activity code
      */
     protected String activity;
-    protected List<BankAccount> bankAccountList;
+    protected List<AISBankAccount> bankAccountList;
 
     protected AISEntity(Builder<?> builder) {
         this.id = builder.id;
@@ -77,7 +77,7 @@ public abstract class AISEntity {
         return activity;
     }
 
-    public List<BankAccount> getBankAccountList() {
+    public List<AISBankAccount> getBankAccountList() {
         if (Objects.isNull(bankAccountList)) {
             bankAccountList = new ArrayList<>();
         }

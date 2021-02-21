@@ -15,5 +15,7 @@ public interface UserDao {
 
     int findUserById(int id);
 
+    int findUserIdByTokenId(String tokenId);
+
     Optional<AISUser> findUserByCredentials(String username, char[] password);
 }

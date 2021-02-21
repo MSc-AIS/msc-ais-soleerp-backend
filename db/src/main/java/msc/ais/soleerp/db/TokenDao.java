@@ -4,7 +4,6 @@ import msc.ais.soleerp.db.exception.DataException;
 import msc.ais.soleerp.db.util.StoreResult;
 import msc.ais.soleerp.model.AISToken;
 
-import javax.xml.crypto.Data;
 import java.util.Optional;
 
 /**

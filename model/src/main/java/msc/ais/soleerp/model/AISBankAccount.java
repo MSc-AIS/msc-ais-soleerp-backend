@@ -3,14 +3,14 @@ package msc.ais.soleerp.model;
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 17/1/2021.
  */
-public class BankAccount {
+public class AISBankAccount {
 
     private final String bankName;
     private final String swiftCode;
     private final String iban;
     private final boolean preferable;
 
-    private BankAccount(Builder builder) {
+    private AISBankAccount(Builder builder) {
         bankName = builder.bankName;
         swiftCode = builder.swiftCode;
         iban = builder.iban;
@@ -67,8 +67,8 @@ public class BankAccount {
             return this;
         }
 
-        public BankAccount build() {
-            return new BankAccount(this);
+        public AISBankAccount build() {
+            return new AISBankAccount(this);
         }
     }
 }
