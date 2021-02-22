@@ -73,7 +73,7 @@ public class PostgresEntityDao implements EntityDao, ModelExtractor {
 
             // Result<Record> records =
             Map<EntityRecord, Result<BankAccountRecord>> records =
-                context.select().from(Entity.ENTITY.join(BankAccount.BANK_ACCOUNT)
+                context.select().from(Entity.ENTITY.leftJoin(BankAccount.BANK_ACCOUNT)
                     .on(Entity.ENTITY.ENTITY_ID.eq(BankAccount.BANK_ACCOUNT.ENTITY_ID)))
                     .where(Entity.ENTITY.ENTITY_ID.eq(id))
                     .and(Entity.ENTITY.USER_ID.eq(userId))
