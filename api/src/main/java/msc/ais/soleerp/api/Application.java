@@ -25,9 +25,11 @@ public class Application {
         app.delete(baseURL + "/user/signout", UserController.signOutUser);
 
         app.get(baseURL + "/entities", EntityController.getEntitiesByUserTokenId);
+        app.get(baseURL + "/entity/id/:id", EntityController.getEntityById);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         mapper.findAndRegisterModules();
         JavalinJackson.configure(mapper);
     }

@@ -5,12 +5,14 @@ package msc.ais.soleerp.model;
  */
 public class AISBankAccount {
 
+    private final int id;
     private final String bankName;
     private final String swiftCode;
     private final String iban;
     private final boolean preferable;
 
     private AISBankAccount(Builder builder) {
+        id = builder.id;
         bankName = builder.bankName;
         swiftCode = builder.swiftCode;
         iban = builder.iban;
@@ -39,12 +41,18 @@ public class AISBankAccount {
 
     public static final class Builder {
 
+        private int id;
         private String bankName;
         private String swiftCode;
         private String iban;
         private boolean preferable;
 
         public Builder() {
+        }
+
+        public Builder bankAccountId(int id) {
+            this.id = id;
+            return this;
         }
 
         public Builder bankName(String bankName) {
@@ -70,5 +78,16 @@ public class AISBankAccount {
         public AISBankAccount build() {
             return new AISBankAccount(this);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "AISBankAccount{" +
+            "id=" + id +
+            ", bankName='" + bankName + '\'' +
+            ", swiftCode='" + swiftCode + '\'' +
+            ", iban='" + iban + '\'' +
+            ", preferable=" + preferable +
+            '}';
     }
 }

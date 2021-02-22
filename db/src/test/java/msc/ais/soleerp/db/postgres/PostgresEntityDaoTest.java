@@ -15,12 +15,20 @@ public class PostgresEntityDaoTest {
 
     @Disabled
     @Test
-    public void testGetEntities() throws Exception {
+    public void testFindEntities() {
 
         EntityDao entityDao = DaoFactory.createEntityDao();
         List<AISEntity> entityList = entityDao.findEntities("dawdaw");
 
         entityList.forEach(entity -> System.out.println(entity.getName()));
+
+    }
+
+    @Test
+    public void testFindEntityById() {
+
+        EntityDao entityDao = DaoFactory.createEntityDao();
+        entityDao.findEntityById(5, 35);
 
     }
 

@@ -85,6 +85,7 @@ public class PostgresUserDao implements UserDao, StoreResultExtractor {
             Result<Record1<Integer>> record1Result = context
                 .select(Token.TOKEN.USER_ID)
                 .from(Token.TOKEN)
+                .where(Token.TOKEN.TOKEN_.eq(tokenId))
                 .fetch();
 
             // need at least 1 token in db

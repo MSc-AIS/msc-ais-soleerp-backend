@@ -5,6 +5,8 @@ import msc.ais.soleerp.db.EntityDao;
 import msc.ais.soleerp.db.jooq.generated.tables.BankAccount;
 import msc.ais.soleerp.db.jooq.generated.tables.Entity;
 import msc.ais.soleerp.db.jooq.generated.tables.VEntity;
+import msc.ais.soleerp.db.jooq.generated.tables.records.BankAccountRecord;
+import msc.ais.soleerp.db.jooq.generated.tables.records.EntityRecord;
 import msc.ais.soleerp.db.jooq.generated.tables.records.VEntityRecord;
 import msc.ais.soleerp.db.util.ModelExtractor;
 import msc.ais.soleerp.model.AISEntity;
@@ -20,6 +22,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -68,9 +71,14 @@ public class PostgresEntityDao implements EntityDao, ModelExtractor {
 
             DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
 
-            Result<Record> records = context.select().from(Entity.ENTITY.join(BankAccount.BANK_ACCOUNT)
-                .on(Entity.ENTITY.ENTITY_ID.eq(BankAccount.BANK_ACCOUNT.ENTITY_ID)))
-                .fetch();
+            // Result<Record> records =
+            Map<EntityRecord, Result<BankAccountRecord>> records =
+                context.select().from(Entity.ENTITY.join(BankAccount.BANK_ACCOUNT)
+                    .on(Entity.ENTITY.ENTITY_ID.eq(BankAccount.BANK_ACCOUNT.ENTITY_ID)))
+                    .where(Entity.ENTITY.ENTITY_ID.eq(id))
+                    .and(Entity.ENTITY.USER_ID.eq(userId))
+                    // .fetch();
+                    .fetchGroups(Entity.ENTITY, BankAccount.BANK_ACCOUNT);
 
             entity = extractEntity(records);
 

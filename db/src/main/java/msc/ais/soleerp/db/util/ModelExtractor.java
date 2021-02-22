@@ -1,15 +1,16 @@
 package msc.ais.soleerp.db.util;
 
+import msc.ais.soleerp.db.jooq.generated.tables.BankAccount;
 import msc.ais.soleerp.db.jooq.generated.tables.Entity;
 import msc.ais.soleerp.db.jooq.generated.tables.VEntity;
+import msc.ais.soleerp.db.jooq.generated.tables.records.BankAccountRecord;
+import msc.ais.soleerp.db.jooq.generated.tables.records.EntityRecord;
 import msc.ais.soleerp.db.jooq.generated.tables.records.VEntityRecord;
 import msc.ais.soleerp.model.*;
 import org.jooq.Record;
 import org.jooq.Result;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 21/2/21.
@@ -46,6 +47,43 @@ public interface ModelExtractor {
                     .website(Objects.requireNonNull(vEntityRecord).getValue(VEntity.V_ENTITY.WEBSITE))
                     .activity(Objects.requireNonNull(vEntityRecord).getValue(VEntity.V_ENTITY.ACTIVITY))
                     .email(Objects.requireNonNull(vEntityRecord).getValue(VEntity.V_ENTITY.EMAIL))
+                    .build();
+
+        }
+
+        throw new IllegalStateException("Error... Unable to specify company flag.");
+    }
+
+    default AISEntity extractEntity(EntityRecord entityRecord) {
+
+        switch (entityRecord.getCompanyFlag()) {
+
+            case "C":
+                return LegalAISEntity.builder()
+                    .entityId(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.ENTITY_ID))
+                    .name(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.NAME))
+                    .role(extractEntityRole(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.ROLE)))
+                    .taxId(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.TAX_ID))
+                    .taxOffice(extractTaxOffice(entityRecord))
+                    .address(extractAddress(entityRecord))
+                    .phoneNumber(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.PHONE))
+                    .website(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.WEBSITE))
+                    .activity(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.ACTIVITY))
+                    .email(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.EMAIL))
+                    .build();
+
+            case "P":
+                return NaturalAISEntity.builder()
+                    .entityId(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.ENTITY_ID))
+                    .name(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.NAME))
+                    .role(extractEntityRole(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.ROLE)))
+                    .taxId(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.TAX_ID))
+                    .taxOffice(extractTaxOffice(entityRecord))
+                    .address(extractAddress(entityRecord))
+                    .phoneNumber(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.PHONE))
+                    .website(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.WEBSITE))
+                    .activity(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.ACTIVITY))
+                    .email(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.EMAIL))
                     .build();
 
         }
@@ -90,6 +128,31 @@ public interface ModelExtractor {
         throw new IllegalStateException("Error... Unable to specify company flag.");
     }
 
+    default AISBankAccount extractBankAccount(BankAccountRecord record) {
+        return AISBankAccount.builder()
+            .bankAccountId(record.getAccountId())
+            .swiftCode(record.getSwiftCode())
+            .bankName(record.getBankNameCode())
+            .iban(record.getIban())
+            .preferable(record.getPreferable().equals("1"))
+            .build();
+    }
+
+    default AISEntity extractEntity(Map<EntityRecord, Result<BankAccountRecord>> recordResultMap) {
+
+        // Get the first entity, all the entities should be the same.
+        final AISEntity entity = extractEntity(recordResultMap.keySet().stream()
+            .findFirst()
+            .orElseThrow(() -> new NoSuchElementException("Map is empty, no entity found.")));
+
+        // loop through all values and extract bank accounts.
+        recordResultMap.values().forEach(bankAccountRecords ->
+            bankAccountRecords.forEach(bankAccountRecord ->
+                entity.getBankAccountList().add(extractBankAccount(bankAccountRecord))));
+
+        return entity;
+    }
+
     default AISEntity extractEntity(Result<Record> records) {
 
         // records.forEach(this::extractEntity);
@@ -102,6 +165,13 @@ public interface ModelExtractor {
     default TaxOffice extractTaxOffice(VEntityRecord vEntityRecord) {
         return TaxOffice.builder()
             .name(Objects.requireNonNull(vEntityRecord).getValue(VEntity.V_ENTITY.TAX_OFFICE))
+            .build();
+    }
+
+    default TaxOffice extractTaxOffice(EntityRecord entityRecord) {
+        return TaxOffice.builder()
+            // .name(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.TAX_OFFICE))
+            .code(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.TAX_OFFICE_CODE))
             .build();
     }
 

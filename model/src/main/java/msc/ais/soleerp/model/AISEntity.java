@@ -161,5 +161,20 @@ public abstract class AISEntity {
         public abstract AISEntity build();
     }
 
-
+    @Override
+    public String toString() {
+        return "AISEntity{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", role=" + role +
+            ", taxId=" + taxId +
+            ", taxOffice=" + taxOffice +
+            ", address=" + address +
+            ", phoneNumber='" + phoneNumber + '\'' +
+            ", email='" + email + '\'' +
+            ", website='" + website + '\'' +
+            ", activity='" + activity + '\'' +
+            ", bankAccountList=" + bankAccountList +
+            '}';
+    }
 }
