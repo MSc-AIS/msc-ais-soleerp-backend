@@ -21,7 +21,7 @@ public interface ModelExtractor {
 
         switch (vEntityRecord.getCompanyFlag()) {
 
-            case "C":
+            case "C": // stands for company
                 return LegalAISEntity.builder()
                     .entityId(Objects.requireNonNull(vEntityRecord).getValue(VEntity.V_ENTITY.ENTITY_ID))
                     .name(Objects.requireNonNull(vEntityRecord).getValue(VEntity.V_ENTITY.NAME))
@@ -35,7 +35,7 @@ public interface ModelExtractor {
                     .email(Objects.requireNonNull(vEntityRecord).getValue(VEntity.V_ENTITY.EMAIL))
                     .build();
 
-            case "P":
+            case "P": // stands for person
                 return NaturalAISEntity.builder()
                     .entityId(Objects.requireNonNull(vEntityRecord).getValue(VEntity.V_ENTITY.ENTITY_ID))
                     .name(Objects.requireNonNull(vEntityRecord).getValue(VEntity.V_ENTITY.NAME))
@@ -58,32 +58,33 @@ public interface ModelExtractor {
 
         switch (entityRecord.getCompanyFlag()) {
 
-            case "C":
+            case "C": // stands for company
                 return LegalAISEntity.builder()
-                    .entityId(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.ENTITY_ID))
-                    .name(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.NAME))
-                    .role(extractEntityRole(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.ROLE)))
-                    .taxId(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.TAX_ID))
+                    .entityId(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.ENTITY_ID))
+                    .name(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.NAME))
+                    .role(extractEntityRole(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.ROLE)))
+                    .taxId(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.TAX_ID))
                     .taxOffice(extractTaxOffice(entityRecord))
                     .address(extractAddress(entityRecord))
-                    .phoneNumber(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.PHONE))
-                    .website(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.WEBSITE))
-                    .activity(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.ACTIVITY))
-                    .email(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.EMAIL))
+                    .phoneNumber(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.PHONE))
+                    .website(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.WEBSITE))
+                    .activity(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.ACTIVITY))
+                    .email(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.EMAIL))
                     .build();
 
-            case "P":
+            case "P": // stands for person
                 return NaturalAISEntity.builder()
-                    .entityId(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.ENTITY_ID))
-                    .name(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.NAME))
-                    .role(extractEntityRole(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.ROLE)))
-                    .taxId(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.TAX_ID))
+                    .entityId(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.ENTITY_ID))
+                    .name(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.NAME))
+                    .role(extractEntityRole(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.ROLE)))
+                    .taxId(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.TAX_ID))
                     .taxOffice(extractTaxOffice(entityRecord))
                     .address(extractAddress(entityRecord))
-                    .phoneNumber(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.PHONE))
-                    .website(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.WEBSITE))
-                    .activity(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.ACTIVITY))
-                    .email(Objects.requireNonNull(entityRecord).getValue(VEntity.V_ENTITY.EMAIL))
+                    .phoneNumber(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.PHONE))
+                    .website(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.WEBSITE))
+                    .activity(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.ACTIVITY))
+                    .email(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.EMAIL))
+                    .companyId(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.COMPANY_ID))
                     .build();
 
         }
