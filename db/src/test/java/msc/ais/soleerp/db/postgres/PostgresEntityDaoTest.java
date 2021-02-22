@@ -28,7 +28,7 @@ public class PostgresEntityDaoTest {
     public void testFindEntityById() {
 
         EntityDao entityDao = DaoFactory.createEntityDao();
-        entityDao.findEntityById(5, 35);
+        entityDao.findEntityById(4, 35);
 
     }
 

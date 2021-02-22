@@ -84,7 +84,8 @@ public interface ModelExtractor {
                     .website(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.WEBSITE))
                     .activity(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.ACTIVITY))
                     .email(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.EMAIL))
-                    .companyId(Objects.requireNonNull(entityRecord).getValue(Entity.ENTITY.COMPANY_ID))
+                    .companyId(Optional.ofNullable(Objects.requireNonNull(entityRecord).get(Entity.ENTITY.COMPANY_ID))
+                        .orElse(0))
                     .build();
 
         }
@@ -131,11 +132,11 @@ public interface ModelExtractor {
 
     default AISBankAccount extractBankAccount(BankAccountRecord record) {
         return AISBankAccount.builder()
-            .bankAccountId(record.getAccountId())
+            .bankAccountId(Optional.ofNullable(record.getAccountId()).orElse(-1))
             .swiftCode(record.getSwiftCode())
             .bankName(record.getBankNameCode())
             .iban(record.getIban())
-            .preferable(record.getPreferable().equals("1"))
+            .preferable(Optional.ofNullable(record.getPreferable()).orElse("-1").equals("1"))
             .build();
     }
 

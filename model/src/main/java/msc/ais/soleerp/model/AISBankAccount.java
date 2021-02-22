@@ -1,5 +1,7 @@
 package msc.ais.soleerp.model;
 
+import java.util.Objects;
+
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 17/1/2021.
  */
@@ -39,7 +41,7 @@ public class AISBankAccount {
         return new Builder();
     }
 
-    public static final class Builder {
+    public static class Builder {
 
         private int id;
         private String bankName;
@@ -47,11 +49,10 @@ public class AISBankAccount {
         private String iban;
         private boolean preferable;
 
-        public Builder() {
-        }
-
         public Builder bankAccountId(int id) {
-            this.id = id;
+            if (id != -1) {
+                this.id = id;
+            }
             return this;
         }
 
