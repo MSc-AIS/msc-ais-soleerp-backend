@@ -231,7 +231,7 @@ public interface ModelExtractor {
         return AISBankAccount.builder()
             .bankAccountId(record.getAccountId())
             .swiftCode(record.getSwiftCode())
-            .bankName(record.getBankNameCode())
+            .bankCode(record.getBankNameCode())
             .iban(record.getIban())
             .preferable(record.getPreferable())
             .build();
@@ -242,6 +242,7 @@ public interface ModelExtractor {
             .bankAccountId(record.get(BankAccount.BANK_ACCOUNT.ACCOUNT_ID))
             .swiftCode(record.get(BankAccount.BANK_ACCOUNT.SWIFT_CODE))
             .bankName(record.get(ReferenceCodes.REFERENCE_CODES.as("rc1").REF_MEANING))
+            .bankCode(record.get(BankAccount.BANK_ACCOUNT.BANK_NAME_CODE))
             .iban(record.get(BankAccount.BANK_ACCOUNT.IBAN))
             .preferable(record.get(BankAccount.BANK_ACCOUNT.PREFERABLE))
             .build();

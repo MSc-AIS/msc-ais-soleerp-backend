@@ -9,6 +9,7 @@ public class AISBankAccount {
 
     private final Integer id;
     private final String bankName;
+    private final String bankCode;
     private final String swiftCode;
     private final String iban;
     private final PreferableType preferable;
@@ -16,6 +17,7 @@ public class AISBankAccount {
     private AISBankAccount(Builder builder) {
         id = builder.id;
         bankName = builder.bankName;
+        bankCode = builder.bankCode;
         swiftCode = builder.swiftCode;
         iban = builder.iban;
         preferable = PreferableType.evaluateType(builder.preferable);
@@ -41,6 +43,10 @@ public class AISBankAccount {
         return preferable;
     }
 
+    public String getBankCode() {
+        return bankCode;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -49,6 +55,7 @@ public class AISBankAccount {
 
         private Integer id;
         private String bankName;
+        private String bankCode;
         private String swiftCode;
         private String iban;
         private String preferable;
@@ -78,6 +85,11 @@ public class AISBankAccount {
             return this;
         }
 
+        public Builder bankCode(String bankCode) {
+            this.bankCode = bankCode;
+            return this;
+        }
+
         public AISBankAccount build() {
             return new AISBankAccount(this);
         }
@@ -88,6 +100,7 @@ public class AISBankAccount {
         return "AISBankAccount{" +
             "id=" + id +
             ", bankName='" + bankName + '\'' +
+            ", bankCode='" + bankCode + '\'' +
             ", swiftCode='" + swiftCode + '\'' +
             ", iban='" + iban + '\'' +
             ", preferable=" + preferable +
