@@ -7,9 +7,11 @@ import msc.ais.soleerp.db.jooq.generated.tables.ReferenceCodes;
 import msc.ais.soleerp.db.jooq.generated.tables.VEntity;
 import msc.ais.soleerp.db.jooq.generated.tables.records.BankAccountRecord;
 import msc.ais.soleerp.db.jooq.generated.tables.records.EntityRecord;
+import msc.ais.soleerp.db.jooq.generated.tables.records.ReferenceCodesRecord;
 import msc.ais.soleerp.db.jooq.generated.tables.records.VEntityRecord;
 import msc.ais.soleerp.model.*;
 import msc.ais.soleerp.model.enums.EntityRole;
+import msc.ais.soleerp.model.internal.AISCountry;
 import org.jooq.Record;
 import org.jooq.Result;
 
@@ -121,12 +123,12 @@ public interface ModelExtractor {
 
         // loop through all values and extract bank accounts.
         records.forEach(record -> {
-                AISBankAccount aisBankAccount = extractBankAccount(record);
-                // add if at least the id is not null
-                if (!Objects.isNull(aisBankAccount.getId())) {
-                    entity.getBankAccountList().add(aisBankAccount);
-                }
-            });
+            AISBankAccount aisBankAccount = extractBankAccount(record);
+            // add if at least the id is not null
+            if (!Objects.isNull(aisBankAccount.getId())) {
+                entity.getBankAccountList().add(aisBankAccount);
+            }
+        });
 
         return entity;
     }
@@ -305,6 +307,13 @@ public interface ModelExtractor {
         }
 
         throw new IllegalStateException("Error... Unable to specify entity role.");
+    }
+
+    default AISCountry extractCountry(ReferenceCodesRecord record) {
+        return AISCountry.builder()
+            .countryCode(record.getRefValue())
+            .countryName(record.getRefMeaning())
+            .build();
     }
 
 }
