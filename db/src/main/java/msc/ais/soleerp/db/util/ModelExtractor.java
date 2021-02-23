@@ -1,5 +1,6 @@
 package msc.ais.soleerp.db.util;
 
+import msc.ais.soleerp.db.DaoFactory;
 import msc.ais.soleerp.db.jooq.generated.tables.Entity;
 import msc.ais.soleerp.db.jooq.generated.tables.VEntity;
 import msc.ais.soleerp.db.jooq.generated.tables.records.BankAccountRecord;
@@ -99,12 +100,44 @@ public interface ModelExtractor {
         throw new IllegalStateException("Error... Unable to specify company flag.");
     }
 
+    default NaturalAISEntity extractNaturalEntity(EntityRecord entityRecord) {
+
+        final String companyFlag = Objects.requireNonNull(entityRecord.getCompanyFlag());
+
+        if ("P".equals(companyFlag)) { // stands for person
+            return NaturalAISEntity.builder()
+                .entityId(entityRecord.getEntityId())
+                .name(entityRecord.getName())
+                // .role(extractEntityRole(entityRecord.getRole()))
+                // .taxId(entityRecord.getTaxId())
+                // .taxOffice(extractTaxOffice(entityRecord))
+                // .address(extractAddress(entityRecord))
+                .phoneNumber(entityRecord.getPhone())
+                // .website(entityRecord.getWebsite())
+                .activity(entityRecord.getActivity())
+                // .email(entityRecord.getEmail())
+                // .companyId(entityRecord.getCompanyId())
+                // .type(companyFlag)
+                .build();
+        }
+
+        throw new IllegalStateException("Error... Unable to specify company flag.");
+    }
+
     default AISEntity extractEntity(Map<EntityRecord, Result<BankAccountRecord>> recordResultMap) {
 
         // Get the first entity, all the entities should be the same.
         final AISEntity entity = extractEntity(recordResultMap.keySet().stream()
             .findFirst()
             .orElseThrow(() -> new NoSuchElementException("Map is empty, no entity found.")));
+
+        // Check for company, in order to add representatives
+        if (entity instanceof LegalAISEntity) {
+            LegalAISEntity legalAISEntity = (LegalAISEntity) entity;
+            legalAISEntity.getRepresentativeList().addAll(
+                DaoFactory.createEntityDao()
+                    .findCompanyRepresentatives(legalAISEntity.getId()));
+        }
 
         // loop through all values and extract bank accounts.
         recordResultMap.values().forEach(bankAccountRecords ->
@@ -116,8 +149,6 @@ public interface ModelExtractor {
                     }
                 }
             ));
-
-        System.out.println("Size of bank account list is: " + entity.getBankAccountList().size());
 
         return entity;
     }

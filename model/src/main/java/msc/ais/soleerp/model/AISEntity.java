@@ -12,10 +12,10 @@ import java.util.Objects;
  */
 public abstract class AISEntity {
 
-    protected int id;
+    protected Integer id;
     protected String name;
     protected EntityRole role;
-    protected long taxId;
+    protected Long taxId;
     protected TaxOffice taxOffice;
     protected Address address;
     protected String phoneNumber;
@@ -46,7 +46,7 @@ public abstract class AISEntity {
         return name;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -54,7 +54,7 @@ public abstract class AISEntity {
         return role;
     }
 
-    public long getTaxId() {
+    public Long getTaxId() {
         return taxId;
     }
 
@@ -95,10 +95,10 @@ public abstract class AISEntity {
 
     protected abstract static class Builder<T extends Builder<T>> {
 
-        private int id;
+        private Integer id;
         private String name;
         private EntityRole role;
-        private long taxId;
+        private Long taxId;
         private TaxOffice taxOffice;
         private Address address;
         private String phoneNumber;
@@ -120,7 +120,7 @@ public abstract class AISEntity {
             return getThis();
         }
 
-        public T taxId(long taxId) {
+        public T taxId(Long taxId) {
             this.taxId = taxId;
             return getThis();
         }
@@ -140,7 +140,7 @@ public abstract class AISEntity {
             return getThis();
         }
 
-        public T entityId(int id) {
+        public T entityId(Integer id) {
             this.id = id;
             return getThis();
         }

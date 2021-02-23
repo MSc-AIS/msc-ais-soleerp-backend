@@ -11,7 +11,6 @@ public class LegalAISEntity extends AISEntity {
 
     private List<NaturalAISEntity> representativeList;
 
-
     protected LegalAISEntity(Builder builder) {
         super(builder);
     }

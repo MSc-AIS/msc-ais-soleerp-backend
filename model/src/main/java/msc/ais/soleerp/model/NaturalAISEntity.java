@@ -38,7 +38,7 @@ public class NaturalAISEntity extends AISEntity {
         }
 
         @Override
-        public AISEntity build() {
+        public NaturalAISEntity build() {
             return new NaturalAISEntity(this);
         }
     }

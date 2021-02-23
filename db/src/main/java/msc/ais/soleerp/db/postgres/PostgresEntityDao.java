@@ -10,8 +10,8 @@ import msc.ais.soleerp.db.jooq.generated.tables.records.EntityRecord;
 import msc.ais.soleerp.db.jooq.generated.tables.records.VEntityRecord;
 import msc.ais.soleerp.db.util.ModelExtractor;
 import msc.ais.soleerp.model.AISEntity;
+import msc.ais.soleerp.model.NaturalAISEntity;
 import org.jooq.DSLContext;
-import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
@@ -47,6 +47,29 @@ public class PostgresEntityDao implements EntityDao, ModelExtractor {
                 .fetch();
 
             entityRecordList.forEach(vEntityRecord -> entityList.add(extractEntity(vEntityRecord)));
+
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return entityList;
+    }
+
+    @Override
+    public List<NaturalAISEntity> findCompanyRepresentatives(int companyId) {
+
+        final List<NaturalAISEntity> entityList = new ArrayList<>();
+
+        try (Connection connection = DBCPDataSource.getConnection()) {
+
+            DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
+
+            List<EntityRecord> entityRecordList = context
+                .selectFrom(Entity.ENTITY)
+                .where(Entity.ENTITY.COMPANY_ID.eq(companyId))
+                .fetch();
+
+            entityRecordList.forEach(entityRecord -> entityList.add(extractNaturalEntity(entityRecord)));
 
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
