@@ -1,5 +1,8 @@
 package msc.ais.soleerp.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import msc.ais.soleerp.model.codelists.CodelistsOfBiMap;
+
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 17/1/2021.
  */
@@ -10,7 +13,7 @@ public class Address {
     private final String postalCode;
     private final String city;
     private final String area;
-    private final String country;
+    private final String countryCode;
 
     private Address(Builder builder) {
         street = builder.street;
@@ -18,7 +21,7 @@ public class Address {
         postalCode = builder.postalCode;
         city = builder.city;
         area = builder.area;
-        country = builder.country;
+        countryCode = builder.countryCode;
     }
 
     public String getStreet() {
@@ -41,8 +44,12 @@ public class Address {
         return area;
     }
 
-    public String getCountry() {
-        return country;
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public String getCountryName() {
+        return CodelistsOfBiMap.COUNTRY_CODE_MAP.getValueForId(countryCode);
     }
 
     public static Builder builder() {
@@ -56,7 +63,7 @@ public class Address {
         private String postalCode;
         private String city;
         private String area;
-        private String country;
+        private String countryCode;
 
         public Builder() {
         }
@@ -86,8 +93,8 @@ public class Address {
             return this;
         }
 
-        public Builder country(String country) {
-            this.country = country;
+        public Builder countryCode(String countryCode) {
+            this.countryCode = countryCode;
             return this;
         }
 

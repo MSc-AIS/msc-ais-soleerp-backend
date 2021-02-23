@@ -4,14 +4,15 @@ import msc.ais.soleerp.db.DBCPDataSource;
 import msc.ais.soleerp.db.EntityDao;
 import msc.ais.soleerp.db.jooq.generated.tables.BankAccount;
 import msc.ais.soleerp.db.jooq.generated.tables.Entity;
+import msc.ais.soleerp.db.jooq.generated.tables.ReferenceCodes;
 import msc.ais.soleerp.db.jooq.generated.tables.VEntity;
-import msc.ais.soleerp.db.jooq.generated.tables.records.BankAccountRecord;
 import msc.ais.soleerp.db.jooq.generated.tables.records.EntityRecord;
 import msc.ais.soleerp.db.jooq.generated.tables.records.VEntityRecord;
 import msc.ais.soleerp.db.util.ModelExtractor;
 import msc.ais.soleerp.model.AISEntity;
 import msc.ais.soleerp.model.NaturalAISEntity;
 import org.jooq.DSLContext;
+import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
@@ -22,7 +23,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -94,19 +95,30 @@ public class PostgresEntityDao implements EntityDao, ModelExtractor {
 
             DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
 
-            // Result<Record> records =
-            Map<EntityRecord, Result<BankAccountRecord>> records =
-                context.select().from(Entity.ENTITY.leftJoin(BankAccount.BANK_ACCOUNT)
-                    .on(Entity.ENTITY.ENTITY_ID.eq(BankAccount.BANK_ACCOUNT.ENTITY_ID)))
-                    .where(Entity.ENTITY.ENTITY_ID.eq(id))
-                    .and(Entity.ENTITY.USER_ID.eq(userId))
-                    // .fetch();
-                    .fetchGroups(Entity.ENTITY, BankAccount.BANK_ACCOUNT);
+            // alias
+            BankAccount ba = BankAccount.BANK_ACCOUNT.as("ba");
+            Entity en = Entity.ENTITY.as("en");
+            ReferenceCodes rc1 = ReferenceCodes.REFERENCE_CODES.as("rc1");
+            ReferenceCodes rc2 = ReferenceCodes.REFERENCE_CODES.as("rc2");
+
+            Result<Record> records =
+                context.select()
+                    .from(en.leftJoin(ba)
+                        .on(en.ENTITY_ID.eq(ba.ENTITY_ID))
+                        .leftJoin(rc1)
+                        .on(ba.BANK_NAME_CODE.eq(rc1.REF_VALUE).and(rc1.REF_DOMAIN.eq("bank_name_code")))
+                        .join(rc2)
+                        .on(en.TAX_OFFICE_CODE.eq(rc2.REF_VALUE).and(rc2.REF_DOMAIN.eq("tax_office_code"))))
+                    .where(en.ENTITY_ID.eq(id))
+                    .and(en.USER_ID.eq(userId))
+                    .fetch();
 
             entity = extractEntity(records);
 
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
+        } catch (NoSuchElementException e) {
+            LOGGER.info(e.getMessage());
         }
 
         return Optional.ofNullable(entity);
