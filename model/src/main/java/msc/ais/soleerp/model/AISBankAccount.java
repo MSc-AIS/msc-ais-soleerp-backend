@@ -1,24 +1,28 @@
 package msc.ais.soleerp.model;
 
-import java.util.Objects;
+import msc.ais.soleerp.model.enums.PreferableType;
 
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 17/1/2021.
  */
 public class AISBankAccount {
 
-    private final int id;
+    private final Integer id;
     private final String bankName;
     private final String swiftCode;
     private final String iban;
-    private final boolean preferable;
+    private final PreferableType preferable;
 
     private AISBankAccount(Builder builder) {
         id = builder.id;
         bankName = builder.bankName;
         swiftCode = builder.swiftCode;
         iban = builder.iban;
-        preferable = builder.preferable;
+        preferable = PreferableType.evaluateType(builder.preferable);
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getBankName() {
@@ -33,7 +37,7 @@ public class AISBankAccount {
         return iban;
     }
 
-    public boolean isPreferable() {
+    public PreferableType getPreferable() {
         return preferable;
     }
 
@@ -43,16 +47,14 @@ public class AISBankAccount {
 
     public static class Builder {
 
-        private int id;
+        private Integer id;
         private String bankName;
         private String swiftCode;
         private String iban;
-        private boolean preferable;
+        private String preferable;
 
-        public Builder bankAccountId(int id) {
-            if (id != -1) {
-                this.id = id;
-            }
+        public Builder bankAccountId(Integer id) {
+            this.id = id;
             return this;
         }
 
@@ -71,7 +73,7 @@ public class AISBankAccount {
             return this;
         }
 
-        public Builder preferable(boolean preferable) {
+        public Builder preferable(String preferable) {
             this.preferable = preferable;
             return this;
         }

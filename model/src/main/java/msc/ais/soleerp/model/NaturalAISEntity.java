@@ -5,14 +5,14 @@ package msc.ais.soleerp.model;
  */
 public class NaturalAISEntity extends AISEntity {
 
-    private final int companyId;
+    private final Integer companyId;
 
     public NaturalAISEntity(Builder builder) {
         super(builder);
         this.companyId = builder.companyId;
     }
 
-    public int getCompanyId() {
+    public Integer getCompanyId() {
         return companyId;
     }
 
@@ -22,7 +22,7 @@ public class NaturalAISEntity extends AISEntity {
 
     public static class Builder extends AISEntity.Builder<Builder> {
 
-        private int companyId;
+        private Integer companyId;
 
         public Builder() {
         }
@@ -32,7 +32,7 @@ public class NaturalAISEntity extends AISEntity {
             return this;
         }
 
-        public Builder companyId(int id) {
+        public Builder companyId(Integer id) {
             this.companyId = id;
             return this;
         }

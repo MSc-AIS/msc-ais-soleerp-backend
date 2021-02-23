@@ -1,5 +1,8 @@
 package msc.ais.soleerp.model;
 
+import msc.ais.soleerp.model.enums.EntityRole;
+import msc.ais.soleerp.model.enums.AISEntityType;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,6 +21,7 @@ public abstract class AISEntity {
     protected String phoneNumber;
     protected String email;
     protected String website;
+    protected AISEntityType type;
     /**
      * Entity's main activity code
      */
@@ -35,6 +39,7 @@ public abstract class AISEntity {
         this.website = builder.website;
         this.email = builder.email;
         this.activity = builder.activity;
+        this.type = AISEntityType.evaluateType(builder.type);
     }
 
     public String getName() {
@@ -77,6 +82,10 @@ public abstract class AISEntity {
         return activity;
     }
 
+    public AISEntityType getType() {
+        return type;
+    }
+
     public List<AISBankAccount> getBankAccountList() {
         if (Objects.isNull(bankAccountList)) {
             bankAccountList = new ArrayList<>();
@@ -96,6 +105,7 @@ public abstract class AISEntity {
         private String email;
         private String website;
         private String activity;
+        private String type;
 
         public Builder() {
         }
@@ -145,6 +155,11 @@ public abstract class AISEntity {
             return getThis();
         }
 
+        public T type(String type) {
+            this.type = type;
+            return getThis();
+        }
+
         /**
          * Commercial main activity.
          *
@@ -161,20 +176,5 @@ public abstract class AISEntity {
         public abstract AISEntity build();
     }
 
-    @Override
-    public String toString() {
-        return "AISEntity{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", role=" + role +
-            ", taxId=" + taxId +
-            ", taxOffice=" + taxOffice +
-            ", address=" + address +
-            ", phoneNumber='" + phoneNumber + '\'' +
-            ", email='" + email + '\'' +
-            ", website='" + website + '\'' +
-            ", activity='" + activity + '\'' +
-            ", bankAccountList=" + bankAccountList +
-            '}';
-    }
+
 }

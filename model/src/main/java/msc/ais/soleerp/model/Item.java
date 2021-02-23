@@ -1,5 +1,8 @@
 package msc.ais.soleerp.model;
 
+import msc.ais.soleerp.model.enums.ItemType;
+import msc.ais.soleerp.model.enums.UnitOfMeasurementType;
+
 import java.util.Map;
 
 /**

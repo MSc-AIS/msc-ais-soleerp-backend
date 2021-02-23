@@ -1,5 +1,7 @@
 package msc.ais.soleerp.model;
 
+import msc.ais.soleerp.model.enums.ItemType;
+
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 17/1/2021.
  */
