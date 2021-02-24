@@ -10,4 +10,8 @@ dependencies {
     implementation("org.jsoup:jsoup:1.13.1")
     // html to pdf library
     implementation("com.openhtmltopdf:openhtmltopdf-pdfbox:1.0.4")
+
+    // implementation ("org.jooq:jooq:3.14.7")
+    // implementation ("org.jooq:jooq-meta:3.14.7")
+    // implementation ("org.jooq:jooq-codegen:3.14.7")
 }

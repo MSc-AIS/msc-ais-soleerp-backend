@@ -3,6 +3,7 @@ package msc.ais.soleerp.db.postgres;
 import msc.ais.soleerp.db.DaoFactory;
 import msc.ais.soleerp.db.EntityDao;
 import msc.ais.soleerp.model.AISEntity;
+import msc.ais.soleerp.model.NaturalAISEntity;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -30,6 +31,28 @@ public class PostgresEntityDaoTest {
         EntityDao entityDao = DaoFactory.createEntityDao();
         entityDao.findEntityById(4, 35);
 
+    }
+
+    @Disabled
+    @Test
+    public void deleteEntityById() {
+
+        EntityDao entityDao = DaoFactory.createEntityDao();
+        int rowsDeleted = entityDao.deleteEntityById(2, 35);
+        System.out.println("Rows deleted: " + rowsDeleted);
+    }
+
+    // @Disabled
+    @Test
+    public void updateEntityById() {
+
+        EntityDao entityDao = DaoFactory.createEntityDao();
+        int rowsUpdated = entityDao.updateEntityById(4, 35,
+            NaturalAISEntity.builder()
+                .type("P")
+                .taxId(88888L)
+                .build());
+        System.out.println("Rows deleted: " + rowsUpdated);
     }
 
 }

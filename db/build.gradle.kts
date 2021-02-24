@@ -12,7 +12,7 @@ dependencies {
     implementation("org.postgresql:postgresql:42.2.18")
     implementation("org.apache.commons:commons-dbcp2:2.8.0")
     // jOOQ
-    implementation ("org.jooq:jooq:3.14.7")
+    // implementation ("org.jooq:jooq:3.14.7")
     implementation ("org.jooq:jooq-meta:3.14.7")
     implementation ("org.jooq:jooq-codegen:3.14.7")
     jooqGenerator("org.postgresql:postgresql:42.2.14")

@@ -21,10 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 21/2/21.
@@ -32,6 +29,33 @@ import java.util.Optional;
 public class PostgresEntityDao implements EntityDao, ModelExtractor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PostgresEntityDao.class);
+
+    @Override
+    public int insertEntity(int userId, EntityRecord record) {
+
+        int entityId = -1;
+
+        try (Connection connection = DBCPDataSource.getConnection()) {
+
+            DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
+            Entity ent = Entity.ENTITY;
+
+            EntityRecord insertedEntity = context.insertInto(ent)
+                .set(record)
+                .returning(Entity.ENTITY.ENTITY_ID)
+                .fetchOne();
+
+            if (!Objects.isNull(insertedEntity)) {
+                entityId = insertedEntity.getEntityId();
+                LOGGER.info("Created entity id: " + entityId);
+            }
+
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return entityId;
+    }
 
     @Override
     public List<AISEntity> findEntities(String tokenId) {
@@ -124,4 +148,75 @@ public class PostgresEntityDao implements EntityDao, ModelExtractor {
         return Optional.ofNullable(entity);
     }
 
+    @Override
+    public int deleteEntityById(int id, int userId) {
+
+        int rowsDeleted = -1;
+
+        try (Connection connection = DBCPDataSource.getConnection()) {
+
+            DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
+
+            rowsDeleted = context
+                .deleteFrom(Entity.ENTITY)
+                .where(Entity.ENTITY.ENTITY_ID.eq(id))
+                .and(Entity.ENTITY.USER_ID.eq(userId))
+                .execute();
+
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return rowsDeleted;
+    }
+
+    @Override
+    public int updateEntityById(int id, int userId, AISEntity entity) {
+
+        int rowsUpdated = -1;
+
+        try (Connection connection = DBCPDataSource.getConnection()) {
+
+            DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
+            Entity ent = Entity.ENTITY;
+
+            rowsUpdated = context.update(ent)
+                .set(extractEntityRecord(entity))
+                .where(ent.ENTITY_ID.eq(id))
+                .and(ent.USER_ID.eq(userId))
+                .execute();
+
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        } catch (IllegalStateException e) {
+            LOGGER.info(e.getMessage());
+        }
+
+        return rowsUpdated;
+    }
+
+    @Override
+    public int updateEntityById(int id, int userId, EntityRecord record) {
+
+        int rowsUpdated = -1;
+
+        try (Connection connection = DBCPDataSource.getConnection()) {
+
+            DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
+            Entity ent = Entity.ENTITY;
+
+            rowsUpdated = context.update(ent)
+                .set(record)
+                .where(ent.ENTITY_ID.eq(id))
+                .and(ent.USER_ID.eq(userId))
+                .execute();
+
+            LOGGER.info("Rows Updated: " + rowsUpdated);
+
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return rowsUpdated;
+    }
 }

@@ -5,6 +5,7 @@ plugins {
 dependencies {
     implementation(project(":model"))
     implementation(project(":service"))
+    implementation(project(":db"))
     implementation("io.javalin:javalin:3.12.0")
 }
 

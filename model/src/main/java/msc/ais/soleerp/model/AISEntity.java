@@ -22,6 +22,7 @@ public abstract class AISEntity {
     protected String email;
     protected String website;
     protected AISEntityType type;
+    protected Integer userId;
     /**
      * Entity's main activity code
      */
@@ -40,6 +41,7 @@ public abstract class AISEntity {
         this.email = builder.email;
         this.activity = builder.activity;
         this.type = AISEntityType.evaluateType(builder.type);
+        this.userId = builder.userId;
     }
 
     public String getName() {
@@ -52,6 +54,10 @@ public abstract class AISEntity {
 
     public EntityRole getRole() {
         return role;
+    }
+
+    public Integer getUserId() {
+        return userId;
     }
 
     public Long getTaxId() {
@@ -106,6 +112,7 @@ public abstract class AISEntity {
         private String website;
         private String activity;
         private String type;
+        private Integer userId;
 
         public Builder() {
         }
@@ -157,6 +164,11 @@ public abstract class AISEntity {
 
         public T type(String type) {
             this.type = type;
+            return getThis();
+        }
+
+        public T userId(Integer userId) {
+            this.userId = userId;
             return getThis();
         }
 

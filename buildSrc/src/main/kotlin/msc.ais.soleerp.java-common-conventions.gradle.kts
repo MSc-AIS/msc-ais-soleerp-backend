@@ -10,6 +10,8 @@ repositories {
 }
 
 dependencies {
+    // jOOQ
+    implementation ("org.jooq:jooq:3.14.7")
     // Apache commons io
     implementation("org.apache.commons:commons-lang3:3.11")
     // guava

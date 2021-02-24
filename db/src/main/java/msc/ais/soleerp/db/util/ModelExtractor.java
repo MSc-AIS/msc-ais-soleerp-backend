@@ -12,6 +12,7 @@ import msc.ais.soleerp.db.jooq.generated.tables.records.VEntityRecord;
 import msc.ais.soleerp.model.*;
 import msc.ais.soleerp.model.enums.EntityRole;
 import msc.ais.soleerp.model.internal.AISCountry;
+import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Result;
 
@@ -314,6 +315,78 @@ public interface ModelExtractor {
             .countryCode(record.getRefValue())
             .countryName(record.getRefMeaning())
             .build();
+    }
+
+    default EntityRecord extractEntityRecord(AISEntity entity) {
+
+        EntityRecord record = new EntityRecord();
+
+        if (!Objects.isNull(entity.getRole())) {
+            record.setRole(entity.getRole().name());
+        }
+        if (!Objects.isNull(entity.getTaxId())) {
+            record.setTaxId(entity.getTaxId());
+        }
+        if (!Objects.isNull(entity.getTaxOffice())
+            && !Objects.isNull(entity.getTaxOffice().getCode())) {
+            record.setTaxOfficeCode(entity.getTaxOffice().getCode());
+        }
+        if (!Objects.isNull(entity.getAddress())) {
+
+            if (!Objects.isNull(entity.getAddress().getStreet())) {
+                record.setStreet(entity.getAddress().getStreet());
+            }
+            if (!Objects.isNull(entity.getAddress().getStreetNumber())) {
+                record.setStreet(entity.getAddress().getStreetNumber());
+            }
+            if (!Objects.isNull(entity.getAddress().getPostalCode())) {
+                record.setStreet(entity.getAddress().getPostalCode());
+            }
+            if (!Objects.isNull(entity.getAddress().getCity())) {
+                record.setStreet(entity.getAddress().getCity());
+            }
+            if (!Objects.isNull(entity.getAddress().getArea())) {
+                record.setStreet(entity.getAddress().getArea());
+            }
+            if (!Objects.isNull(entity.getAddress().getCountryCode())) {
+                record.setStreet(entity.getAddress().getCountryCode());
+            }
+
+        }
+        if (!Objects.isNull(entity.getPhoneNumber())) {
+            record.setPhone(entity.getPhoneNumber());
+        }
+        if (!Objects.isNull(entity.getWebsite())) {
+            record.setWebsite(entity.getWebsite());
+        }
+        if (!Objects.isNull(entity.getActivity())) {
+            record.setActivity(entity.getActivity());
+        }
+        if (!Objects.isNull(entity.getEmail())) {
+            record.setActivity(entity.getEmail());
+        }
+        if (!Objects.isNull(entity.getUserId())) {
+            record.setUserId(entity.getUserId());
+        }
+
+
+        switch (entity.getType()) {
+
+            case COMPANY:
+
+                return record;
+
+            case PERSON:
+
+                NaturalAISEntity naturalAISEntity = (NaturalAISEntity) entity;
+
+                if (!Objects.isNull(naturalAISEntity.getCompanyId())) {
+                    record.setCompanyId(naturalAISEntity.getCompanyId());
+                }
+                return record;
+        }
+
+        throw new IllegalStateException("Error... Unable to specify AISEntity type.");
     }
 
 }
