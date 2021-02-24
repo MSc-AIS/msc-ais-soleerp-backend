@@ -38,6 +38,7 @@ public class PostgresEntityDao implements EntityDao, ModelExtractor {
         try (Connection connection = DBCPDataSource.getConnection()) {
 
             DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
+            record.setUserId(userId);
             Entity ent = Entity.ENTITY;
 
             EntityRecord insertedEntity = context.insertInto(ent)
@@ -203,6 +204,7 @@ public class PostgresEntityDao implements EntityDao, ModelExtractor {
         try (Connection connection = DBCPDataSource.getConnection()) {
 
             DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
+            record.setUserId(userId);
             Entity ent = Entity.ENTITY;
 
             rowsUpdated = context.update(ent)
