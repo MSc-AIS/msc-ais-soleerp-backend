@@ -93,7 +93,9 @@ public class PostgresItemDao implements ItemDao, ItemModelExtractor {
             DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
             Item i = Item.ITEM;
 
-            Result<ItemRecord> records = context.selectFrom(i).where(i.USER_ID.eq(userId)).fetch();
+            Result<ItemRecord> records = context.selectFrom(i)
+                .where(i.USER_ID.eq(userId))
+                .fetch();
             records.forEach(record -> itemList.add(extractItem(record)));
 
         } catch (SQLException e) {

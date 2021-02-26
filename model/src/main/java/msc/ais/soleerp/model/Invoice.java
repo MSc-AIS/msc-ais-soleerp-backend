@@ -8,7 +8,7 @@ import java.util.List;
 public abstract class Invoice {
 
     protected String id;
-    protected Transaction transaction;
+    protected AISTransaction transaction;
     protected AISUser user;
     protected String row;
     protected String notes;

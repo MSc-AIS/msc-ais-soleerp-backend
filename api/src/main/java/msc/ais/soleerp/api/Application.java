@@ -8,6 +8,7 @@ import io.javalin.plugin.json.JavalinJackson;
 import msc.ais.soleerp.api.conf.ServerConfig;
 import msc.ais.soleerp.api.controller.EntityController;
 import msc.ais.soleerp.api.controller.ItemController;
+import msc.ais.soleerp.api.controller.TransactionController;
 import msc.ais.soleerp.api.controller.UserController;
 
 public class Application {
@@ -35,6 +36,8 @@ public class Application {
         app.get(baseURL + "/items", ItemController.getItems);
         app.delete(baseURL + "/item/id/:id", ItemController.deleteItemById);
         app.put(baseURL + "/item/id/:id", ItemController.updateItemById);
+
+        app.get(baseURL + "/transactions", TransactionController.getTransactions);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);

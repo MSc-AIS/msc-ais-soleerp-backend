@@ -24,4 +24,8 @@ public class ServiceFactory {
         return new ItemServiceImpl();
     }
 
+    public static TransactionService createTransactionService() {
+        return new TransactionServiceImpl();
+    }
+
 }

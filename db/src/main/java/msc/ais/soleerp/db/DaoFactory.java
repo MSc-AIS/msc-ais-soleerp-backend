@@ -27,4 +27,8 @@ public class DaoFactory {
         return new PostgresItemDao();
     }
 
+    public static TransactionDao createTransactionDao() {
+        return new PostgresTransactionDao();
+    }
+
 }
