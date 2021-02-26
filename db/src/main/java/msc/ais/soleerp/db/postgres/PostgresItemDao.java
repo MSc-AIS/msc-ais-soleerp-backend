@@ -71,6 +71,8 @@ public class PostgresItemDao implements ItemDao, ItemModelExtractor {
                 .set(i.MEASUREMENT_CODE, item.getMeasurementCode())
                 .set(i.TYPE_CODE, item.getItemCode())
                 .set(i.DATE_FIRST_SOLD, item.getFirstSoldDate())
+                .where(i.ITEM_ID.eq(id))
+                .and(i.USER_ID.eq(userId))
                 .execute();
 
         } catch (SQLException e) {

@@ -53,7 +53,7 @@ public class ItemController {
                     ctx.queryParam("tokenId"),
                     item);
 
-            if (rowsUpdated == 1) {
+            if (rowsUpdated > 0) {
                 ctx.status(HttpStatus.OK_200);
             } else {
                 ctx.status(HttpStatus.NOT_FOUND_404);
