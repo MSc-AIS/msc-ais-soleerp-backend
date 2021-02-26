@@ -1,6 +1,5 @@
 package msc.ais.soleerp.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import msc.ais.soleerp.model.enums.ItemType;
 import msc.ais.soleerp.model.enums.UnitOfMeasurementType;
 
