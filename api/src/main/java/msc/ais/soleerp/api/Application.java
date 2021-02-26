@@ -32,6 +32,9 @@ public class Application {
         app.post(baseURL + "/entity", EntityController.insertEntity);
 
         app.post(baseURL + "/item", ItemController.insertItem);
+        app.get(baseURL + "/items", ItemController.getItems);
+        app.delete(baseURL + "/item/id/:id", ItemController.deleteItemById);
+        app.put(baseURL + "/item/id/:id", ItemController.updateItemById);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);

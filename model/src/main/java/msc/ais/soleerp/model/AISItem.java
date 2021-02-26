@@ -32,6 +32,7 @@ public class AISItem {
         this.unitOfMeasurementType = builder.unitOfMeasurementType;
         this.createdDate = builder.createdDate;
         this.firstSoldDate = builder.firstSoldDate;
+        this.userId = builder.userId;
     }
 
     public Integer getId() {
@@ -111,6 +112,7 @@ public class AISItem {
         private UnitOfMeasurementType unitOfMeasurementType;
         private LocalDate createdDate;
         private LocalDate firstSoldDate;
+        private Integer userId;
 
         public Builder() {
         }
@@ -142,6 +144,11 @@ public class AISItem {
 
         public Builder firstSoldDate(LocalDate firstSoldDate) {
             this.firstSoldDate = firstSoldDate;
+            return this;
+        }
+
+        public Builder userId(Integer userId) {
+            this.userId = userId;
             return this;
         }
 

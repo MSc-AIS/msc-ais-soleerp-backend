@@ -25,4 +25,38 @@ public class ItemController {
         }
     };
 
+    public static Handler getItems =
+        ctx -> ctx.json(ServiceFactory.createItemService()
+            .findItems(ctx.queryParam("tokenId")));
+
+
+    public static Handler deleteItemById =
+        ctx -> {
+            int rowsDeleted = ServiceFactory.createItemService()
+                .deleteItemById(
+                    ctx.pathParam("id", Integer.class).get(),
+                    ctx.queryParam("tokenId"));
+
+            if (rowsDeleted > 0) {
+                ctx.status(HttpStatus.OK_200);
+            } else {
+                ctx.status(HttpStatus.NOT_FOUND_404);
+            }
+        };
+
+    public static Handler updateItemById =
+        ctx -> {
+            AISItem item = ctx.bodyValidator(AISItem.class).get();
+            int rowsUpdated = ServiceFactory.createItemService()
+                .updatedItemById(
+                    ctx.pathParam("id", Integer.class).get(),
+                    ctx.queryParam("tokenId"),
+                    item);
+
+            if (rowsUpdated == 1) {
+                ctx.status(HttpStatus.OK_200);
+            } else {
+                ctx.status(HttpStatus.NOT_FOUND_404);
+            }
+        };
 }
