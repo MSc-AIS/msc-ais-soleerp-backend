@@ -4,7 +4,7 @@ import msc.ais.soleerp.db.DBCPDataSource;
 import msc.ais.soleerp.db.ReferenceCodesDao;
 import msc.ais.soleerp.db.jooq.generated.tables.ReferenceCodes;
 import msc.ais.soleerp.db.jooq.generated.tables.records.ReferenceCodesRecord;
-import msc.ais.soleerp.db.util.ModelExtractor;
+import msc.ais.soleerp.db.util.EntityModelExtractor;
 import msc.ais.soleerp.model.internal.AISCountry;
 import org.jooq.DSLContext;
 import org.jooq.Result;
@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 23/2/2021.
  */
-public class PostgresReferenceCodesDao implements ReferenceCodesDao, ModelExtractor {
+public class PostgresReferenceCodesDao implements ReferenceCodesDao, EntityModelExtractor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PostgresReferenceCodesDao.class);
 

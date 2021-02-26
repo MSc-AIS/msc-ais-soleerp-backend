@@ -21,7 +21,7 @@ import java.util.*;
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 21/2/21.
  */
-public interface ModelExtractor {
+public interface EntityModelExtractor {
 
     default AISEntity extractEntity(VEntityRecord vEntityRecord) {
 

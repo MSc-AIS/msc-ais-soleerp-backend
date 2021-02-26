@@ -38,7 +38,7 @@ public class EntityController {
             }
         };
 
-    public static Handler insertEntityById = ctx -> {
+    public static Handler insertEntity = ctx -> {
         Entity entity = ctx.bodyValidator(Entity.class).get();
 
         EntityRecord record = new EntityRecord();

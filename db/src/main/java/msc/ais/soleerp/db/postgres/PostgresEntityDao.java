@@ -8,7 +8,7 @@ import msc.ais.soleerp.db.jooq.generated.tables.ReferenceCodes;
 import msc.ais.soleerp.db.jooq.generated.tables.VEntity;
 import msc.ais.soleerp.db.jooq.generated.tables.records.EntityRecord;
 import msc.ais.soleerp.db.jooq.generated.tables.records.VEntityRecord;
-import msc.ais.soleerp.db.util.ModelExtractor;
+import msc.ais.soleerp.db.util.EntityModelExtractor;
 import msc.ais.soleerp.model.AISEntity;
 import msc.ais.soleerp.model.NaturalAISEntity;
 import org.jooq.DSLContext;
@@ -26,7 +26,7 @@ import java.util.*;
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 21/2/21.
  */
-public class PostgresEntityDao implements EntityDao, ModelExtractor {
+public class PostgresEntityDao implements EntityDao, EntityModelExtractor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PostgresEntityDao.class);
 

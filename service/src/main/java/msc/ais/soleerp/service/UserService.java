@@ -16,4 +16,6 @@ public interface UserService {
 
     boolean signOut(String tokenId);
 
+    int getUserByTokenId(String tokenId);
+
 }

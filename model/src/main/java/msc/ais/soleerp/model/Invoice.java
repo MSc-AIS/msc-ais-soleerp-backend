@@ -13,8 +13,8 @@ public abstract class Invoice {
     protected String row;
     protected String notes;
 
-    protected List<Item> itemList;
+    protected List<AISItem> itemList;
 
-    public abstract void addItem(Item item);
+    public abstract void addItem(AISItem item);
 
 }

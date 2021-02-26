@@ -8,8 +8,8 @@ import msc.ais.soleerp.model.enums.ItemType;
 public class ServiceInvoice extends Invoice {
 
     @Override
-    public void addItem(Item item) {
-        if (item.getType() != ItemType.SERVICE) {
+    public void addItem(AISItem item) {
+        if (item.getItemType() != ItemType.SERVICE) {
             throw new IllegalArgumentException("Message here");
         }
         itemList.add(item);

@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -16,6 +15,11 @@ import java.util.Optional;
 public class EntityServiceImpl implements EntityService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EntityServiceImpl.class);
+    private final UserService userService;
+
+    public EntityServiceImpl() {
+        this.userService = ServiceFactory.createUserService();
+    }
 
     @Override
     public List<AISEntity> findEntitiesByTokenId(String tokenId) {
@@ -24,38 +28,27 @@ public class EntityServiceImpl implements EntityService {
 
     @Override
     public Optional<AISEntity> findEntityById(int id, String tokenId) {
-        return DaoFactory.createEntityDao().findEntityById(id, getUserByTokenId(tokenId));
+        return DaoFactory.createEntityDao().findEntityById(id, userService.getUserByTokenId(tokenId));
     }
 
     @Override
     public boolean deleteEntityById(int id, String tokenId) {
-        return DaoFactory.createEntityDao().deleteEntityById(id, getUserByTokenId(tokenId)) > 0;
+        return DaoFactory.createEntityDao().deleteEntityById(id, userService.getUserByTokenId(tokenId)) > 0;
     }
 
     @Override
     public boolean updateEntityById(int id, String tokenId, AISEntity entity) {
-        return DaoFactory.createEntityDao().updateEntityById(id, getUserByTokenId(tokenId), entity) > 0;
+        return DaoFactory.createEntityDao().updateEntityById(id, userService.getUserByTokenId(tokenId), entity) > 0;
     }
 
     @Override
     public int updateEntityById(int id, String tokenId, EntityRecord record) {
-        return DaoFactory.createEntityDao().updateEntityById(id, getUserByTokenId(tokenId), record);
+        return DaoFactory.createEntityDao().updateEntityById(id, userService.getUserByTokenId(tokenId), record);
     }
 
     @Override
     public int insertEntity(String tokenId, EntityRecord record) {
-        return DaoFactory.createEntityDao().insertEntity(getUserByTokenId(tokenId), record);
-    }
-
-    private int getUserByTokenId(String tokenId) {
-        int userId = DaoFactory.createUserDao().findUserIdByTokenId(tokenId);
-
-        if (userId == -1) {
-            throw new NoSuchElementException("Error... Unable to find a user for token: " + tokenId);
-        }
-
-        LOGGER.info("Token: " + tokenId + " belongs to user with userId: " + userId);
-        return userId;
+        return DaoFactory.createEntityDao().insertEntity(userService.getUserByTokenId(tokenId), record);
     }
 
 }

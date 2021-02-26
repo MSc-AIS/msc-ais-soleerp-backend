@@ -20,4 +20,8 @@ public class ServiceFactory {
         return new EntityServiceImpl();
     }
 
+    public static ItemService createItemService() {
+        return new ItemServiceImpl();
+    }
+
 }

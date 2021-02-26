@@ -12,6 +12,7 @@ import msc.ais.soleerp.service.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -121,5 +122,17 @@ public class UserServiceImpl implements UserService {
         LOGGER.debug("Trying to delete token with id: " + tokenId);
 
         return isDeleted;
+    }
+
+    @Override
+    public int getUserByTokenId(String tokenId) {
+        int userId = DaoFactory.createUserDao().findUserIdByTokenId(tokenId);
+
+        if (userId == -1) {
+            throw new NoSuchElementException("Error... Unable to find a user for token: " + tokenId);
+        }
+
+        LOGGER.info("Token: " + tokenId + " belongs to user with userId: " + userId);
+        return userId;
     }
 }
