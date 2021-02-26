@@ -57,6 +57,7 @@ public class EntityController {
         record.setActivity(entity.activity);
         record.setCompanyId(entity.companyId);
         record.setEmail(entity.email);
+        record.setCompanyFlag(entity.companyFlag);
 
         // record.from(entity);
 
@@ -114,7 +115,7 @@ public class EntityController {
     static class Entity {
         // public Integer id;
         public String name;
-        // public String companyFlag;
+        public String companyFlag;
         public String role;
         public Long taxId;
         public String taxOfficeCode;
