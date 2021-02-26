@@ -40,7 +40,7 @@ public class PostgresItemDao implements ItemDao, ItemModelExtractor {
                 .set(i.USER_ID, userId)
                 .set(i.DESCRIPTION, item.getDescription())
                 .set(i.MEASUREMENT_CODE, item.getMeasurementCode())
-                .set(i.TYPE_CODE, item.getItemCode())
+                .set(i.TYPE_CODE, item.getTypeCode())
                 .returning(i.ITEM_ID)
                 .fetchOne();
 
@@ -69,7 +69,7 @@ public class PostgresItemDao implements ItemDao, ItemModelExtractor {
             rowsUpdated = context.update(i)
                 .set(i.DESCRIPTION, item.getDescription())
                 .set(i.MEASUREMENT_CODE, item.getMeasurementCode())
-                .set(i.TYPE_CODE, item.getItemCode())
+                .set(i.TYPE_CODE, item.getTypeCode())
                 .where(i.ITEM_ID.eq(id))
                 .and(i.USER_ID.eq(userId))
                 .execute();

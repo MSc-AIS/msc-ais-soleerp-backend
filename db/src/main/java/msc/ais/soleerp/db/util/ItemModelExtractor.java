@@ -16,8 +16,8 @@ public interface ItemModelExtractor {
     default AISItem extractItem(ItemRecord record) {
         return AISItem.builder()
             .id(record.getItemId())
-            .itemType(extractItemType(record.getTypeCode()))
-            .unitOfMeasurementType(extractUnitOfMeasurementType(record.getMeasurementCode()))
+            .typeCode(record.getTypeCode())
+            .measurementCode(record.getMeasurementCode())
             .createdDate(record.get(Item.ITEM.DATE_CREATED, LocalDate.class))
             .firstSoldDate(record.get(Item.ITEM.DATE_FIRST_SOLD, LocalDate.class))
             .userId(record.getUserId())

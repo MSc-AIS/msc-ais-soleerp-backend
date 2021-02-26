@@ -1,8 +1,5 @@
 package msc.ais.soleerp.model;
 
-import msc.ais.soleerp.model.enums.ItemType;
-import msc.ais.soleerp.model.enums.UnitOfMeasurementType;
-
 import java.time.LocalDate;
 
 /**
@@ -11,10 +8,8 @@ import java.time.LocalDate;
 public class AISItem {
 
     private Integer id;
-    private ItemType itemType;
-    private String itemCode;
+    private String typeCode;
     private String description;
-    private UnitOfMeasurementType unitOfMeasurementType;
     private String measurementCode;
     private LocalDate createdDate;
     private LocalDate firstSoldDate;
@@ -26,40 +21,30 @@ public class AISItem {
 
     private AISItem(Builder builder) {
         this.id = builder.id;
-        this.itemType = builder.itemType;
         this.description = builder.description;
-        this.unitOfMeasurementType = builder.unitOfMeasurementType;
         this.createdDate = builder.createdDate;
         this.firstSoldDate = builder.firstSoldDate;
         this.userId = builder.userId;
+        this.typeCode = builder.typeCode;
+        this.measurementCode = builder.measurementCode;
     }
 
     public Integer getId() {
         return id;
     }
 
-    public ItemType getItemType() {
-        return itemType;
-    }
-
     public Integer getUserId() {
         return userId;
     }
 
-    // @JsonIgnore
-    public String getItemCode() {
-        return itemCode;
+    public String getTypeCode() {
+        return typeCode;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public UnitOfMeasurementType getUnitOfMeasurementType() {
-        return unitOfMeasurementType;
-    }
-
-    // @JsonIgnore
     public String getMeasurementCode() {
         return measurementCode;
     }
@@ -76,8 +61,8 @@ public class AISItem {
         this.id = id;
     }
 
-    public void setItemCode(String itemCode) {
-        this.itemCode = itemCode;
+    public void setTypeCode(String typeCode) {
+        this.typeCode = typeCode;
     }
 
     public void setDescription(String description) {
@@ -106,12 +91,12 @@ public class AISItem {
 
     public static final class Builder {
         private Integer id;
-        private ItemType itemType;
         private String description;
-        private UnitOfMeasurementType unitOfMeasurementType;
         private LocalDate createdDate;
         private LocalDate firstSoldDate;
         private Integer userId;
+        private String typeCode;
+        private String measurementCode;
 
         public Builder() {
         }
@@ -121,18 +106,18 @@ public class AISItem {
             return this;
         }
 
-        public Builder itemType(ItemType itemType) {
-            this.itemType = itemType;
+        public Builder typeCode(String typeCode) {
+            this.typeCode = typeCode;
+            return this;
+        }
+
+        public Builder measurementCode(String measurementCode) {
+            this.measurementCode = measurementCode;
             return this;
         }
 
         public Builder description(String description) {
             this.description = description;
-            return this;
-        }
-
-        public Builder unitOfMeasurementType(UnitOfMeasurementType unitOfMeasurementType) {
-            this.unitOfMeasurementType = unitOfMeasurementType;
             return this;
         }
 
