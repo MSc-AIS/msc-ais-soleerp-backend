@@ -14,4 +14,7 @@ public interface TransactionService {
 
     Optional<AISTransaction> findTransactionById(int id, String tokenId);
 
+    int deleteTransactionById(int id, String tokenId);
+
+    int updateTransactionById(int id, String tokenId, AISTransaction transaction);
 }

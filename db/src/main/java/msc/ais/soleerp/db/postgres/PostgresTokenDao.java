@@ -5,8 +5,8 @@ import msc.ais.soleerp.db.TokenDao;
 import msc.ais.soleerp.db.exception.DataException;
 import msc.ais.soleerp.db.jooq.generated.tables.Token;
 import msc.ais.soleerp.db.jooq.generated.tables.records.TokenRecord;
+import msc.ais.soleerp.db.util.ModelExtractor;
 import msc.ais.soleerp.db.util.StoreResult;
-import msc.ais.soleerp.db.util.StoreResultExtractor;
 import msc.ais.soleerp.model.AISToken;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
@@ -22,7 +22,7 @@ import java.util.Optional;
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 20/2/2021.
  */
-public class PostgresTokenDao implements TokenDao, StoreResultExtractor {
+public class PostgresTokenDao implements TokenDao, ModelExtractor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PostgresTokenDao.class);
 

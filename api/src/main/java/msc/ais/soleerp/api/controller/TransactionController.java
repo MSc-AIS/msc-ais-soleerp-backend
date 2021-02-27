@@ -23,4 +23,18 @@ public class TransactionController {
                 ctx.json(response);
                 ctx.status(HttpStatus.OK_200);
             }, () -> ctx.status(HttpStatus.NOT_FOUND_404));
+
+    public static Handler deleteTransactionById =
+        ctx -> {
+            int rowsDeleted = ServiceFactory.createTransactionService()
+                .deleteTransactionById(
+                    ctx.pathParam("id", Integer.class).get(),
+                    ctx.queryParam("tokenId"));
+
+            if (rowsDeleted > 0) {
+                ctx.status(HttpStatus.OK_200);
+            } else {
+                ctx.status(HttpStatus.NOT_FOUND_404);
+            }
+        };
 }

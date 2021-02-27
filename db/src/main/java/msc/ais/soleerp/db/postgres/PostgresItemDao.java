@@ -4,7 +4,7 @@ import msc.ais.soleerp.db.DBCPDataSource;
 import msc.ais.soleerp.db.ItemDao;
 import msc.ais.soleerp.db.jooq.generated.tables.Item;
 import msc.ais.soleerp.db.jooq.generated.tables.records.ItemRecord;
-import msc.ais.soleerp.db.util.ItemModelExtractor;
+import msc.ais.soleerp.db.util.ModelExtractor;
 import msc.ais.soleerp.model.AISItem;
 import org.jooq.DSLContext;
 import org.jooq.Result;
@@ -22,7 +22,7 @@ import java.util.Objects;
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 26/2/2021.
  */
-public class PostgresItemDao implements ItemDao, ItemModelExtractor {
+public class PostgresItemDao implements ItemDao, ModelExtractor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PostgresItemDao.class);
 
