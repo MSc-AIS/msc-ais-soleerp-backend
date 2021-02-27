@@ -32,4 +32,14 @@ public class TransactionServiceImpl implements TransactionService {
     public Optional<AISTransaction> findTransactionById(int id, String tokenId) {
         return transactionDao.findTransactionById(id, userService.getUserByTokenId(tokenId));
     }
+
+    @Override
+    public int deleteTransactionById(int id, String tokenId) {
+        return transactionDao.deleteTransactionById(id, userService.getUserByTokenId(tokenId));
+    }
+
+    @Override
+    public int updateTransactionById(int id, String tokenId, AISTransaction transaction) {
+        return 0;
+    }
 }

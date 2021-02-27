@@ -93,4 +93,39 @@ public class PostgresTransactionDao implements TransactionDao, ModelExtractor {
 
         return Optional.ofNullable(transaction);
     }
+
+    @Override
+    public int deleteTransactionById(int id, int userId) {
+
+        int rowsDeleted = -1;
+
+        try (Connection connection = DBCPDataSource.getConnection()) {
+
+            DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
+            Transaction t = Transaction.TRANSACTION;
+            Entity e = Entity.ENTITY;
+
+            rowsDeleted = context
+                .deleteFrom(t)
+                .where(t.TRANSACTION_ID.eq(id))
+                .and(t.ENTITY_ID.in(
+                    context
+                        .select(e.ENTITY_ID)
+                        .from(e)
+                        .where(e.USER_ID.eq(userId))))
+                .execute();
+
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        LOGGER.info("Rows deleted: " + rowsDeleted);
+
+        return rowsDeleted;
+    }
+
+    @Override
+    public int updateTransactionById(int id, int userId, AISTransaction transaction) {
+        return 0;
+    }
 }

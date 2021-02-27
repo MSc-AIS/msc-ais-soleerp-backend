@@ -39,6 +39,7 @@ public class Application {
 
         app.get(baseURL + "/transactions", TransactionController.getTransactions);
         app.get(baseURL + "/transaction/id/:id", TransactionController.getTransactionById);
+        app.delete(baseURL + "/transaction/id/:id", TransactionController.deleteTransactionById);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
