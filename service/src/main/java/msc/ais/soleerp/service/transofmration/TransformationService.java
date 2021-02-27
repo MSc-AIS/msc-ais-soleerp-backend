@@ -1,6 +1,6 @@
 package msc.ais.soleerp.service.transofmration;
 
-import msc.ais.soleerp.model.ServiceInvoice;
+import msc.ais.soleerp.model.AISInvoice;
 import org.w3c.dom.Document;
 
 import java.io.OutputStream;
@@ -10,9 +10,9 @@ import java.io.OutputStream;
  */
 public interface TransformationService {
 
-    void buildFTL(ServiceInvoice invoice);
+    void buildFTL(AISInvoice invoice);
 
-    Document transformToW3Doc(ServiceInvoice invoice);
+    Document transformToW3Doc(AISInvoice invoice);
 
     void createPDF(Document document);
 

@@ -4,7 +4,7 @@ import com.openhtmltopdf.pdfboxout.PdfBoxRenderer;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import msc.ais.soleerp.model.ServiceInvoice;
+import msc.ais.soleerp.model.AISInvoice;
 import msc.ais.soleerp.service.transofmration.conf.FreeMarkerDefaultConfig;
 import org.apache.commons.lang3.SystemUtils;
 import org.jsoup.Jsoup;
@@ -25,7 +25,7 @@ public class TransformationServiceImpl implements TransformationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(TransformationServiceImpl.class);
 
     @Override
-    public void buildFTL(ServiceInvoice invoice) {
+    public void buildFTL(AISInvoice invoice) {
         // Create a data-model
         Map<String, Object> root = new HashMap<>();
         root.put("invoice", invoice);
@@ -46,7 +46,7 @@ public class TransformationServiceImpl implements TransformationService {
     }
 
     @Override
-    public Document transformToW3Doc(ServiceInvoice invoice) {
+    public Document transformToW3Doc(AISInvoice invoice) {
 
         Document document = null;
 
