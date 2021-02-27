@@ -2,8 +2,10 @@ package msc.ais.soleerp.db.util;
 
 import msc.ais.soleerp.db.jooq.generated.tables.Item;
 import msc.ais.soleerp.db.jooq.generated.tables.Transaction;
+import msc.ais.soleerp.db.jooq.generated.tables.TransactionItems;
 import msc.ais.soleerp.db.jooq.generated.tables.records.TransactionRecord;
 import msc.ais.soleerp.model.AISItem;
+import msc.ais.soleerp.model.AISItemTransaction;
 import msc.ais.soleerp.model.AISTransaction;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -55,9 +57,20 @@ public interface TransactionModelExtractor {
         final AISTransaction transaction = extractTransaction(records.get(0));
 
         // Extract the transaction items
-        records.forEach(record -> transaction.getItemList().add(extractAISItem(record)));
+        records.forEach(record -> transaction.getItemTransactionList().add(extractItemTransaction(record)));
 
         return transaction;
+    }
+
+    default AISItemTransaction extractItemTransaction(Record record) {
+        TransactionItems ti = TransactionItems.TRANSACTION_ITEMS;
+        return AISItemTransaction.builder()
+            .transactionId(record.get(ti.TRANSACTION_ID))
+            .item(extractAISItem(record))
+            .quantity(record.get(ti.QUANTITY, Double.class))
+            .discount(record.get(ti.DISCOUNT, Integer.class))
+            .unitPrice(record.get(ti.UNIT_PRICE, Double.class))
+            .build();
     }
 
     default AISItem extractAISItem(Record record) {

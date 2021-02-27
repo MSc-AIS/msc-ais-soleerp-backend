@@ -20,7 +20,7 @@ public class AISTransaction {
     private Double totalPrice;
     private String status;
 
-    private List<AISItem> itemList;
+    private List<AISItemTransaction> itemTransactionList;
 
     public AISTransaction() {
 
@@ -110,11 +110,11 @@ public class AISTransaction {
         this.status = status;
     }
 
-    public List<AISItem> getItemList() {
-        if (Objects.isNull(itemList)) {
-            itemList = new ArrayList<>();
+    public List<AISItemTransaction> getItemTransactionList() {
+        if (Objects.isNull(itemTransactionList)) {
+            itemTransactionList = new ArrayList<>();
         }
-        return itemList;
+        return itemTransactionList;
     }
 
     public static Builder builder() {

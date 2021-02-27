@@ -82,8 +82,8 @@ public class PostgresTransactionDao implements TransactionDao, TransactionModelE
 
             transaction = extractTransactionWithItems(records);
 
-            LOGGER.info("Transaction with id: " + id
-                + " found and contains " + transaction.getItemList().size() + " items.");
+            LOGGER.info("Transaction with id: " + id + " found and contains "
+                + transaction.getItemTransactionList().size() + " item transactions.");
 
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
