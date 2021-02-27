@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 27/2/2021.
@@ -27,4 +28,8 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionDao.findTransactions(userService.getUserByTokenId(tokenId));
     }
 
+    @Override
+    public Optional<AISTransaction> findTransactionById(int id, String tokenId) {
+        return transactionDao.findTransactionById(id, userService.getUserByTokenId(tokenId));
+    }
 }

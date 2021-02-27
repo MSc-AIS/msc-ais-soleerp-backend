@@ -1,7 +1,9 @@
 package msc.ais.soleerp.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 20/1/2021.
@@ -17,6 +19,8 @@ public class AISTransaction {
     private String paymentTerms;
     private Double totalPrice;
     private String status;
+
+    private List<AISItem> itemList;
 
     public AISTransaction() {
 
@@ -104,6 +108,13 @@ public class AISTransaction {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public List<AISItem> getItemList() {
+        if (Objects.isNull(itemList)) {
+            itemList = new ArrayList<>();
+        }
+        return itemList;
     }
 
     public static Builder builder() {

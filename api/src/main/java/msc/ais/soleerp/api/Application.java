@@ -38,6 +38,7 @@ public class Application {
         app.put(baseURL + "/item/id/:id", ItemController.updateItemById);
 
         app.get(baseURL + "/transactions", TransactionController.getTransactions);
+        app.get(baseURL + "/transaction/id/:id", TransactionController.getTransactionById);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);

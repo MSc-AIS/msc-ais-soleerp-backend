@@ -12,11 +12,12 @@ import msc.ais.soleerp.db.jooq.generated.tables.records.VEntityRecord;
 import msc.ais.soleerp.model.*;
 import msc.ais.soleerp.model.enums.EntityRole;
 import msc.ais.soleerp.model.internal.AISCountry;
-import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Result;
 
-import java.util.*;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 21/2/21.
@@ -109,7 +110,7 @@ public interface EntityModelExtractor {
 
         // Get the first entity, all the entities should be the same.
         if (records.size() < 1) {
-            throw new NoSuchElementException("Result does not contain any records.");
+            throw new NoSuchElementException("Result doAes not contain any records.");
         }
 
         final AISEntity entity = extractEntity(records.get(0));
