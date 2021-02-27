@@ -1,28 +1,25 @@
 package msc.ais.soleerp.db.util;
 
 import msc.ais.soleerp.db.DaoFactory;
-import msc.ais.soleerp.db.jooq.generated.tables.BankAccount;
-import msc.ais.soleerp.db.jooq.generated.tables.Entity;
-import msc.ais.soleerp.db.jooq.generated.tables.ReferenceCodes;
-import msc.ais.soleerp.db.jooq.generated.tables.VEntity;
-import msc.ais.soleerp.db.jooq.generated.tables.records.BankAccountRecord;
-import msc.ais.soleerp.db.jooq.generated.tables.records.EntityRecord;
-import msc.ais.soleerp.db.jooq.generated.tables.records.ReferenceCodesRecord;
-import msc.ais.soleerp.db.jooq.generated.tables.records.VEntityRecord;
+import msc.ais.soleerp.db.jooq.generated.tables.*;
+import msc.ais.soleerp.db.jooq.generated.tables.records.*;
 import msc.ais.soleerp.model.*;
 import msc.ais.soleerp.model.enums.EntityRole;
+import msc.ais.soleerp.model.enums.ItemType;
+import msc.ais.soleerp.model.enums.UnitOfMeasurementType;
 import msc.ais.soleerp.model.internal.AISCountry;
 import org.jooq.Record;
 import org.jooq.Result;
 
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
- * @author Konstantinos Raptis [kraptis at unipi.gr] on 21/2/21.
+ * @author Konstantinos Raptis [kraptis at unipi.gr] on 27/2/2021.
  */
-public interface EntityModelExtractor {
+public interface ModelExtractor {
 
     default AISEntity extractEntity(VEntityRecord vEntityRecord) {
 
@@ -388,6 +385,152 @@ public interface EntityModelExtractor {
         }
 
         throw new IllegalStateException("Error... Unable to specify AISEntity type.");
+    }
+
+    default StoreResult extractStoreResult(int storeResult) {
+
+        switch (storeResult) {
+
+            case 0:
+                return StoreResult.UNNECESSARY;
+
+            case 1:
+                return StoreResult.SUCCESS;
+
+            default:
+                return StoreResult.FAILURE;
+
+        }
+    }
+
+    default StoreMetadata extractStoreMetadata(int storeResult, int autoGenId) {
+        return StoreMetadata.of(autoGenId, extractStoreResult(storeResult));
+    }
+
+    default AISItem extractItem(ItemRecord record) {
+        return AISItem.builder()
+            .id(record.getItemId())
+            .typeCode(record.getTypeCode())
+            .measurementCode(record.getMeasurementCode())
+            .createdDate(record.get(Item.ITEM.DATE_CREATED, LocalDate.class))
+            .firstSoldDate(record.get(Item.ITEM.DATE_FIRST_SOLD, LocalDate.class))
+            .userId(record.getUserId())
+            .description(record.getDescription())
+            .build();
+    }
+
+    default UnitOfMeasurementType extractUnitOfMeasurementType(String type) {
+
+        switch (type) {
+
+            case "KG":
+                return UnitOfMeasurementType.PER_KILO;
+
+            case "EA":
+                return UnitOfMeasurementType.QUANTITY;
+
+            case "WE":
+                return UnitOfMeasurementType.PER_WEEK;
+
+            case "MR":
+                return UnitOfMeasurementType.METRES;
+
+            case "DA":
+                return UnitOfMeasurementType.PER_DAY;
+
+            case "MO":
+                return UnitOfMeasurementType.PER_MONTH;
+
+            case "YE":
+                return UnitOfMeasurementType.PER_YEAR;
+
+        }
+
+        throw new IllegalStateException(
+            "Error... Unable to specify unit of measurement type.");
+    }
+
+    default ItemType extractItemType(String type) {
+
+        switch (type) {
+
+            case "S":
+                return ItemType.SERVICE;
+
+            case "I":
+                return ItemType.IMMATERIAL_PRODUCT;
+
+        }
+
+        throw new IllegalStateException("Error... Unable to specify item type.");
+    }
+
+    default AISTransaction extractTransaction(TransactionRecord record) {
+        return AISTransaction.builder()
+            .id(record.getTransactionId())
+            .companyFlag(record.getCompanyFlag())
+            .entityId(record.getEntityId())
+            .orderNumber(record.get(Transaction.TRANSACTION.ENTITY_ORDER_NO, Integer.class))
+            .createdDate(record.get(Transaction.TRANSACTION.DATE_CREATED, LocalDate.class))
+            .title(record.getTitle())
+            .totalPrice(record.get(Transaction.TRANSACTION.TOTAL_PRICE, Double.class))
+            .paymentTerms(record.getPaymentTerms())
+            .status(record.getStatus())
+            .build();
+    }
+
+    default AISTransaction extractTransaction(Record record) {
+        Transaction t = Transaction.TRANSACTION;
+        return AISTransaction.builder()
+            .id(record.get(t.TRANSACTION_ID))
+            .companyFlag(record.get(t.COMPANY_FLAG))
+            .entityId(record.get(t.ENTITY_ID))
+            .orderNumber(record.get(t.ENTITY_ORDER_NO, Integer.class))
+            .createdDate(record.get(t.DATE_CREATED, LocalDate.class))
+            .title(record.get(t.TITLE))
+            .totalPrice(record.get(t.TOTAL_PRICE, Double.class))
+            .paymentTerms(record.get(t.PAYMENT_TERMS))
+            .status(record.get(t.STATUS))
+            .build();
+    }
+
+    default AISTransaction extractTransactionWithItems(Result<Record> records) {
+
+        if (records.size() < 1) {
+            throw new NoSuchElementException("Result does not contain any records");
+        }
+
+        // Extract the transaction
+        final AISTransaction transaction = extractTransaction(records.get(0));
+
+        // Extract the transaction items
+        records.forEach(record -> transaction.getItemTransactionList().add(extractItemTransaction(record)));
+
+        return transaction;
+    }
+
+    default AISItemTransaction extractItemTransaction(Record record) {
+        TransactionItems ti = TransactionItems.TRANSACTION_ITEMS;
+        return AISItemTransaction.builder()
+            .transactionId(record.get(ti.TRANSACTION_ID))
+            .item(extractAISItem(record))
+            .quantity(record.get(ti.QUANTITY, Double.class))
+            .discount(record.get(ti.DISCOUNT, Integer.class))
+            .unitPrice(record.get(ti.UNIT_PRICE, Double.class))
+            .build();
+    }
+
+    default AISItem extractAISItem(Record record) {
+        Item i = Item.ITEM;
+        return AISItem.builder()
+            .id(record.get(i.ITEM_ID))
+            .typeCode(record.get(i.TYPE_CODE))
+            .measurementCode(record.get(i.MEASUREMENT_CODE))
+            .createdDate(record.get(Item.ITEM.DATE_CREATED, LocalDate.class))
+            .firstSoldDate(record.get(Item.ITEM.DATE_FIRST_SOLD, LocalDate.class))
+            .userId(record.get(i.USER_ID))
+            .description(record.get(i.DESCRIPTION))
+            .build();
     }
 
 }

@@ -7,7 +7,7 @@ import msc.ais.soleerp.db.jooq.generated.tables.Item;
 import msc.ais.soleerp.db.jooq.generated.tables.Transaction;
 import msc.ais.soleerp.db.jooq.generated.tables.TransactionItems;
 import msc.ais.soleerp.db.jooq.generated.tables.records.TransactionRecord;
-import msc.ais.soleerp.db.util.TransactionModelExtractor;
+import msc.ais.soleerp.db.util.ModelExtractor;
 import msc.ais.soleerp.model.AISTransaction;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -27,7 +27,7 @@ import java.util.Optional;
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 27/2/2021.
  */
-public class PostgresTransactionDao implements TransactionDao, TransactionModelExtractor {
+public class PostgresTransactionDao implements TransactionDao, ModelExtractor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PostgresTransactionDao.class);
 

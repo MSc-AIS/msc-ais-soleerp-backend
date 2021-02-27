@@ -5,7 +5,7 @@ import msc.ais.soleerp.db.UserDao;
 import msc.ais.soleerp.db.exception.DataException;
 import msc.ais.soleerp.db.jooq.generated.tables.AppUser;
 import msc.ais.soleerp.db.jooq.generated.tables.Token;
-import msc.ais.soleerp.db.util.StoreResultExtractor;
+import msc.ais.soleerp.db.util.ModelExtractor;
 import msc.ais.soleerp.model.AISUser;
 import org.jooq.*;
 import org.jooq.impl.DSL;
@@ -21,7 +21,7 @@ import java.util.Optional;
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 19/2/21.
  */
-public class PostgresUserDao implements UserDao, StoreResultExtractor {
+public class PostgresUserDao implements UserDao, ModelExtractor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PostgresUserDao.class);
 
