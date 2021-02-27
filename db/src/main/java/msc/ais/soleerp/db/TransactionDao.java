@@ -10,6 +10,8 @@ import java.util.Optional;
  */
 public interface TransactionDao {
 
+    int insertTransaction(int userId, AISTransaction transaction);
+
     List<AISTransaction> findTransactions(int userId);
 
     Optional<AISTransaction> findTransactionById(int id, int userId);

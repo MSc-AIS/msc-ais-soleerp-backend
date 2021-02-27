@@ -2,10 +2,7 @@ package msc.ais.soleerp.db.postgres;
 
 import msc.ais.soleerp.db.DBCPDataSource;
 import msc.ais.soleerp.db.TransactionDao;
-import msc.ais.soleerp.db.jooq.generated.tables.Entity;
-import msc.ais.soleerp.db.jooq.generated.tables.Item;
-import msc.ais.soleerp.db.jooq.generated.tables.Transaction;
-import msc.ais.soleerp.db.jooq.generated.tables.TransactionItems;
+import msc.ais.soleerp.db.jooq.generated.tables.*;
 import msc.ais.soleerp.db.jooq.generated.tables.records.TransactionRecord;
 import msc.ais.soleerp.db.util.ModelExtractor;
 import msc.ais.soleerp.model.AISTransaction;
@@ -30,6 +27,29 @@ import java.util.Optional;
 public class PostgresTransactionDao implements TransactionDao, ModelExtractor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PostgresTransactionDao.class);
+
+    @Override
+    public int insertTransaction(int userId, AISTransaction transaction) {
+
+        int transactionId = -1;
+
+        try (Connection connection = DBCPDataSource.getConnection()) {
+
+            DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
+            Transaction t = Transaction.TRANSACTION;
+
+            context.insertInto(t)
+                .set(t.TITLE, transaction.getTitle())
+                .set(t.ENTITY_ORDER_NO, transaction.getOrderNumber())
+                .returning(t.TRANSACTION_ID, t.DATE_CREATED)
+                .fetchOne();
+
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return transactionId;
+    }
 
     @Override
     public List<AISTransaction> findTransactions(int userId) {

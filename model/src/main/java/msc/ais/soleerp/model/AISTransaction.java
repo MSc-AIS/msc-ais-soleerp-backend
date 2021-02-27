@@ -13,7 +13,7 @@ public class AISTransaction {
     private Integer id;
     private Integer entityId;
     private String title;
-    private Integer orderNumber;
+    private String orderNumber;
     private String companyFlag;
     private LocalDate createdDate;
     private String paymentTerms;
@@ -62,11 +62,11 @@ public class AISTransaction {
         this.title = title;
     }
 
-    public Integer getOrderNumber() {
+    public String getOrderNumber() {
         return orderNumber;
     }
 
-    public void setOrderNumber(Integer orderNumber) {
+    public void setOrderNumber(String orderNumber) {
         this.orderNumber = orderNumber;
     }
 
@@ -126,7 +126,7 @@ public class AISTransaction {
         private Integer id;
         private Integer entityId;
         private String title;
-        private Integer orderNumber;
+        private String orderNumber;
         private String companyFlag;
         private LocalDate createdDate;
         private String paymentTerms;
@@ -151,7 +151,7 @@ public class AISTransaction {
             return this;
         }
 
-        public Builder orderNumber(Integer orderNumber) {
+        public Builder orderNumber(String orderNumber) {
             this.orderNumber = orderNumber;
             return this;
         }
