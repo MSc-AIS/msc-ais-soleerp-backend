@@ -74,7 +74,8 @@ public class PostgresTransactionDao implements TransactionDao, TransactionModelE
 
             // records contain transaction with items
             Result<Record> records = context.select()
-                .from(t.leftJoin(ti).on(t.TRANSACTION_ID.eq(ti.TRANSACTION_ID))
+                .from(t
+                    .join(ti).on(t.TRANSACTION_ID.eq(ti.TRANSACTION_ID))
                     .join(i).on(ti.ITEM_ID.eq(i.ITEM_ID)))
                 .where(i.USER_ID.eq(userId)).and(t.TRANSACTION_ID.eq(id))
                 .fetch();
