@@ -28,4 +28,8 @@ public class ServiceFactory {
         return new TransactionServiceImpl();
     }
 
+    public static InvoiceService createInvoiceService() {
+        return new InvoiceServiceImpl();
+    }
+
 }

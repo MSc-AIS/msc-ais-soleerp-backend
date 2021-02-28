@@ -31,4 +31,12 @@ public class DaoFactory {
         return new PostgresTransactionDao();
     }
 
+    public static InvoiceDao createInvoiceDao() {
+        return new PostgresInvoiceDao();
+    }
+
+    public static TransactionItemDao createTransactionItemDao() {
+        return new PostgresTransactionItemDao();
+    }
+
 }

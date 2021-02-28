@@ -55,7 +55,7 @@ public class EntityServiceImpl implements EntityService {
     }
 
     @Override
-    public boolean isEntityBelongToUser(int id, String tokenId) {
-        return entityDao.isEntityBelongToUser(id, userService.getUserByTokenId(tokenId));
+    public boolean isEntityBelongToUser(int id, int userId) {
+        return entityDao.isEntityBelongToUser(id, userId);
     }
 }

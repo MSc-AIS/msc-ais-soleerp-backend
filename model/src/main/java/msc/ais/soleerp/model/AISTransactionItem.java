@@ -3,7 +3,7 @@ package msc.ais.soleerp.model;
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 27/2/2021.
  */
-public class AISItemTransaction {
+public class AISTransactionItem {
 
     private AISItem item;
     private Integer transactionId;
@@ -11,11 +11,11 @@ public class AISItemTransaction {
     private Integer discount;
     private Double quantity;
 
-    public AISItemTransaction() {
+    public AISTransactionItem() {
 
     }
 
-    private AISItemTransaction(Builder builder) {
+    private AISTransactionItem(Builder builder) {
         item = builder.item;
         transactionId = builder.transactionId;
         unitPrice = builder.unitPrice;
@@ -103,8 +103,8 @@ public class AISItemTransaction {
             return this;
         }
 
-        public AISItemTransaction build() {
-            return new AISItemTransaction(this);
+        public AISTransactionItem build() {
+            return new AISTransactionItem(this);
         }
     }
 }

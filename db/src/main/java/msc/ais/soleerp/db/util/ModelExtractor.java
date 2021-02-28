@@ -504,14 +504,14 @@ public interface ModelExtractor {
         final AISTransaction transaction = extractTransaction(records.get(0));
 
         // Extract the transaction items
-        records.forEach(record -> transaction.getItemTransactionList().add(extractItemTransaction(record)));
+        records.forEach(record -> transaction.getTransactionItemList().add(extractItemTransaction(record)));
 
         return transaction;
     }
 
-    default AISItemTransaction extractItemTransaction(Record record) {
+    default AISTransactionItem extractItemTransaction(Record record) {
         TransactionItems ti = TransactionItems.TRANSACTION_ITEMS;
-        return AISItemTransaction.builder()
+        return AISTransactionItem.builder()
             .transactionId(record.get(ti.TRANSACTION_ID))
             .item(extractAISItem(record))
             .quantity(record.get(ti.QUANTITY, Double.class))
@@ -530,6 +530,27 @@ public interface ModelExtractor {
             .firstSoldDate(record.get(Item.ITEM.DATE_FIRST_SOLD, LocalDate.class))
             .userId(record.get(i.USER_ID))
             .description(record.get(i.DESCRIPTION))
+            .build();
+    }
+
+    default AISInvoice extractInvoiceWithTransaction(Record record) {
+        Invoice i = Invoice.INVOICE;
+        Transaction t = Transaction.TRANSACTION;
+        return AISInvoice.builder()
+            .id(record.get(i.INVOICE_ID))
+            .notes(record.get(i.NOTES))
+            .row(record.get(i.ROW))
+            .transaction(AISTransaction.builder()
+                .id(record.get(t.TRANSACTION_ID))
+                .entityId(record.get(t.ENTITY_ID))
+                .totalPrice(record.get(t.TOTAL_PRICE, Double.class))
+                .title(record.get(t.TITLE))
+                .createdDate(record.get(t.DATE_CREATED))
+                .paymentTerms(record.get(t.PAYMENT_TERMS))
+                .status(record.get(t.STATUS))
+                .companyFlag(record.get(t.COMPANY_FLAG))
+                .orderNumber(record.get(t.ENTITY_ORDER_NO))
+                .build())
             .build();
     }
 

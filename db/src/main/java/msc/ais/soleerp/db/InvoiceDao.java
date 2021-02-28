@@ -2,6 +2,7 @@ package msc.ais.soleerp.db;
 
 import msc.ais.soleerp.model.AISInvoice;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -9,6 +10,8 @@ import java.util.Optional;
  */
 public interface InvoiceDao {
 
-    Optional<String> insertInvoice(int userId, AISInvoice invoice);
+    Optional<String> insertInvoice(int userId, int transactionId, AISInvoice invoice);
+
+    List<AISInvoice> findInvoices(int userId);
 
 }

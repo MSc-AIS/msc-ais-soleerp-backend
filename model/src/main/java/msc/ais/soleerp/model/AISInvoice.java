@@ -5,11 +5,11 @@ package msc.ais.soleerp.model;
  */
 public class AISInvoice {
 
-    protected String id;
-    protected AISTransaction transaction;
-    protected AISUser user;
-    protected String row;
-    protected String notes;
+    private String id;
+    private AISTransaction transaction;
+    private AISUser user;
+    private String row;
+    private String notes;
 
     public AISInvoice() {
 

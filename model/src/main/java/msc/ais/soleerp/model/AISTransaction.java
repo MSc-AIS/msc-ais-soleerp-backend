@@ -20,7 +20,7 @@ public class AISTransaction {
     private Double totalPrice;
     private String status;
 
-    private List<AISItemTransaction> itemTransactionList;
+    private List<AISTransactionItem> transactionItemList;
 
     public AISTransaction() {
 
@@ -110,11 +110,11 @@ public class AISTransaction {
         this.status = status;
     }
 
-    public List<AISItemTransaction> getItemTransactionList() {
-        if (Objects.isNull(itemTransactionList)) {
-            itemTransactionList = new ArrayList<>();
+    public List<AISTransactionItem> getTransactionItemList() {
+        if (Objects.isNull(transactionItemList)) {
+            transactionItemList = new ArrayList<>();
         }
-        return itemTransactionList;
+        return transactionItemList;
     }
 
     public static Builder builder() {
@@ -184,5 +184,21 @@ public class AISTransaction {
         public AISTransaction build() {
             return new AISTransaction(this);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "AISTransaction{" +
+            "id=" + id +
+            ", entityId=" + entityId +
+            ", title='" + title + '\'' +
+            ", orderNumber='" + orderNumber + '\'' +
+            ", companyFlag='" + companyFlag + '\'' +
+            ", createdDate=" + createdDate +
+            ", paymentTerms='" + paymentTerms + '\'' +
+            ", totalPrice=" + totalPrice +
+            ", status='" + status + '\'' +
+            ", transactionItemList=" + transactionItemList +
+            '}';
     }
 }

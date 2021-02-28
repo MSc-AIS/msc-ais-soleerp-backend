@@ -38,7 +38,6 @@ public class PostgresTransactionDao implements TransactionDao, ModelExtractor {
                 .set(t.ENTITY_ORDER_NO, transaction.getOrderNumber())
                 .set(t.COMPANY_FLAG, transaction.getCompanyFlag())
                 .set(t.PAYMENT_TERMS, transaction.getPaymentTerms())
-                .set(t.TOTAL_PRICE, BigDecimal.valueOf(transaction.getTotalPrice()))
                 .set(t.STATUS, transaction.getStatus())
                 .set(t.ENTITY_ID, transaction.getEntityId())
                 .returningResult(t.TRANSACTION_ID, t.DATE_CREATED)
@@ -110,7 +109,7 @@ public class PostgresTransactionDao implements TransactionDao, ModelExtractor {
             transaction = extractTransactionWithItems(records);
 
             LOGGER.info("Transaction with id: " + id + " found and contains "
-                + transaction.getItemTransactionList().size() + " item transactions.");
+                + transaction.getTransactionItemList().size() + " item transactions.");
 
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
