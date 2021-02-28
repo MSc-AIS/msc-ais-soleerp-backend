@@ -18,6 +18,8 @@ public interface EntityDao {
 
     Optional<AISEntity> findEntityById(int id, int userId);
 
+    boolean isEntityBelongToUser(int id, int userId);
+
     int deleteEntityById(int id, int userId);
 
     List<NaturalAISEntity> findCompanyRepresentatives(int companyId);

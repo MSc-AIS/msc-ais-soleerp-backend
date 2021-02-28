@@ -3,23 +3,20 @@ package msc.ais.soleerp.db.postgres;
 import msc.ais.soleerp.db.DBCPDataSource;
 import msc.ais.soleerp.db.TransactionDao;
 import msc.ais.soleerp.db.jooq.generated.tables.*;
+import msc.ais.soleerp.db.jooq.generated.tables.Transaction;
 import msc.ais.soleerp.db.jooq.generated.tables.records.TransactionRecord;
 import msc.ais.soleerp.db.util.ModelExtractor;
 import msc.ais.soleerp.model.AISTransaction;
-import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.Result;
-import org.jooq.SQLDialect;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 
 /**
  * @author Konstantinos Raptis [kraptis at unipi.gr] on 27/2/2021.
@@ -29,26 +26,36 @@ public class PostgresTransactionDao implements TransactionDao, ModelExtractor {
     private static final Logger LOGGER = LoggerFactory.getLogger(PostgresTransactionDao.class);
 
     @Override
-    public int insertTransaction(int userId, AISTransaction transaction) {
-
-        int transactionId = -1;
+    public Optional<AISTransaction> insertTransaction(AISTransaction transaction) {
 
         try (Connection connection = DBCPDataSource.getConnection()) {
 
             DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
             Transaction t = Transaction.TRANSACTION;
 
-            context.insertInto(t)
+            Record2<Integer, LocalDate> record2 = context.insertInto(t)
                 .set(t.TITLE, transaction.getTitle())
                 .set(t.ENTITY_ORDER_NO, transaction.getOrderNumber())
-                .returning(t.TRANSACTION_ID, t.DATE_CREATED)
+                .set(t.COMPANY_FLAG, transaction.getCompanyFlag())
+                .set(t.PAYMENT_TERMS, transaction.getPaymentTerms())
+                .set(t.TOTAL_PRICE, BigDecimal.valueOf(transaction.getTotalPrice()))
+                .set(t.STATUS, transaction.getStatus())
+                .set(t.ENTITY_ID, transaction.getEntityId())
+                .returningResult(t.TRANSACTION_ID, t.DATE_CREATED)
                 .fetchOne();
+
+            if (!Objects.isNull(record2)) {
+                transaction.setCreatedDate(record2.get(t.DATE_CREATED, LocalDate.class));
+                transaction.setId(record2.get(t.TRANSACTION_ID));
+                LOGGER.info("Inserted transaction id: " + record2.get(t.TRANSACTION_ID));
+                return Optional.of(transaction);
+            }
 
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
 
-        return transactionId;
+        return Optional.empty();
     }
 
     @Override

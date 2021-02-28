@@ -22,4 +22,6 @@ public interface EntityService {
     int updateEntityById(int id, String tokenId, EntityRecord record);
 
     int insertEntity(String tokenId, EntityRecord record);
+
+    boolean isEntityBelongToUser(int id, String tokenId);
 }

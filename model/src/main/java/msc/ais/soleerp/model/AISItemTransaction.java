@@ -11,6 +11,10 @@ public class AISItemTransaction {
     private Integer discount;
     private Double quantity;
 
+    public AISItemTransaction() {
+
+    }
+
     private AISItemTransaction(Builder builder) {
         item = builder.item;
         transactionId = builder.transactionId;

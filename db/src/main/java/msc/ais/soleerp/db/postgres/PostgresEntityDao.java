@@ -11,10 +11,7 @@ import msc.ais.soleerp.db.jooq.generated.tables.records.VEntityRecord;
 import msc.ais.soleerp.db.util.ModelExtractor;
 import msc.ais.soleerp.model.AISEntity;
 import msc.ais.soleerp.model.NaturalAISEntity;
-import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.Result;
-import org.jooq.SQLDialect;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -220,5 +217,32 @@ public class PostgresEntityDao implements EntityDao, ModelExtractor {
         }
 
         return rowsUpdated;
+    }
+
+    @Override
+    public boolean isEntityBelongToUser(int id, int userId) {
+
+        boolean result = false;
+
+        try (Connection connection = DBCPDataSource.getConnection()) {
+
+            DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
+            Entity e = Entity.ENTITY;
+
+            Record1<Integer> record = context.select(e.ENTITY_ID)
+                .from(e)
+                .where(e.ENTITY_ID.eq(id))
+                .and(e.USER_ID.eq(userId))
+                .fetchOne();
+
+            if (!Objects.isNull(record)) {
+                result = true;
+            }
+
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return result;
     }
 }

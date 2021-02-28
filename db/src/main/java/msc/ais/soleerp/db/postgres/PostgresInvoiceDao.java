@@ -5,6 +5,7 @@ import msc.ais.soleerp.db.InvoiceDao;
 import msc.ais.soleerp.db.jooq.generated.tables.Invoice;
 import msc.ais.soleerp.model.AISInvoice;
 import org.jooq.DSLContext;
+import org.jooq.Record1;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -22,23 +24,27 @@ public class PostgresInvoiceDao implements InvoiceDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(PostgresInvoiceDao.class);
 
     @Override
-    public String insertInvoice(AISInvoice aisInvoice) {
-
-        String invoiceId = null;
+    public Optional<String> insertInvoice(int userId, AISInvoice invoice) {
 
         try (Connection connection = DBCPDataSource.getConnection()) {
 
             DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
             Invoice i = Invoice.INVOICE;
 
-            context.insertInto(i)
-                .set
+            Record1<String> record1 = context.insertInto(i)
+                .set(i.NOTES, invoice.getNotes())
+                .returningResult(i.INVOICE_ID)
+                .fetchOne();
+
+            if (!Objects.isNull(record1)) {
+
+            }
 
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
 
-        return Optional.ofNullable(invoiceId);
+        return Optional.empty();
     }
 
 }

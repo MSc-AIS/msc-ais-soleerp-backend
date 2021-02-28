@@ -22,7 +22,8 @@ public class DBCPDataSource {
 
     static {
         final String confFileName = "db.conf";
-        final String confFilePath = SystemUtils.getUserDir().getParentFile().getParent()
+        final String confFilePath = SystemUtils.getUserDir()
+            .getParentFile().getParent()
             + "/" + confFileName;
 
         try {
