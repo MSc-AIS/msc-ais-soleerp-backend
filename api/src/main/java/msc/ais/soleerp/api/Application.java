@@ -35,6 +35,7 @@ public class Application {
         app.put(baseURL + "/item/id/:id", ItemController.updateItemById);
 
         app.get(baseURL + "/transactions", TransactionController.getTransactions);
+        app.get(baseURL + "/transactions/income/last-month", TransactionController.getLastMonthIncome);
         app.get(baseURL + "/transaction/id/:id", TransactionController.getTransactionById);
         app.delete(baseURL + "/transaction/id/:id", TransactionController.deleteTransactionById);
 

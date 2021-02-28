@@ -37,4 +37,13 @@ public class TransactionController {
                 ctx.status(HttpStatus.NOT_FOUND_404);
             }
         };
+
+    public static Handler getLastMonthIncome =
+        ctx -> ServiceFactory.createTransactionService()
+            .findLastMonthIncome(
+                ctx.queryParam("tokenId"))
+            .ifPresentOrElse(income -> {
+                ctx.json(income);
+                ctx.status(HttpStatus.OK_200);
+            }, () -> ctx.status(HttpStatus.NOT_FOUND_404));
 }

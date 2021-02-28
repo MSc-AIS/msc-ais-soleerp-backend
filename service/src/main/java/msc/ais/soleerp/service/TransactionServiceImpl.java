@@ -42,4 +42,9 @@ public class TransactionServiceImpl implements TransactionService {
     public int updateTransactionById(int id, String tokenId, AISTransaction transaction) {
         return 0;
     }
+
+    @Override
+    public Optional<Double> findLastMonthIncome(String tokenId) {
+        return transactionDao.findLastMonthIncome(userService.getUserByTokenId(tokenId));
+    }
 }

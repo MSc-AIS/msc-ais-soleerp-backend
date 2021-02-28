@@ -2,8 +2,10 @@ package msc.ais.soleerp.db.postgres;
 
 import msc.ais.soleerp.db.DBCPDataSource;
 import msc.ais.soleerp.db.TransactionDao;
-import msc.ais.soleerp.db.jooq.generated.tables.*;
+import msc.ais.soleerp.db.jooq.generated.tables.Entity;
+import msc.ais.soleerp.db.jooq.generated.tables.Item;
 import msc.ais.soleerp.db.jooq.generated.tables.Transaction;
+import msc.ais.soleerp.db.jooq.generated.tables.TransactionItems;
 import msc.ais.soleerp.db.jooq.generated.tables.records.TransactionRecord;
 import msc.ais.soleerp.db.util.ModelExtractor;
 import msc.ais.soleerp.model.AISTransaction;
@@ -12,7 +14,6 @@ import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -153,5 +154,42 @@ public class PostgresTransactionDao implements TransactionDao, ModelExtractor {
     @Override
     public int updateTransactionById(int id, int userId, AISTransaction transaction) {
         return 0;
+    }
+
+    @Override
+    public Optional<Double> findLastMonthIncome(int userId) {
+
+        try (Connection connection = DBCPDataSource.getConnection()) {
+
+            DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
+            Transaction t = Transaction.TRANSACTION;
+            Entity e = Entity.ENTITY;
+
+            Record record =
+                context
+                    .select(DSL.sum(t.TOTAL_PRICE).as("monthly_income"))
+                    .from(t
+                        .join(e).on(t.ENTITY_ID.eq(e.ENTITY_ID)))
+                    .where(e.USER_ID.eq(userId))
+                    .and(DSL.extract(t.DATE_CREATED, DatePart.MONTH)
+                        .eq(DSL.extract(LocalDate.now(), DatePart.MONTH)))
+                    .fetchOne();
+
+            if (!Objects.isNull(record)) {
+                LOGGER.info("Last month income for user: " + userId + " is: "
+                    + record.get("monthly_income"));
+                return Optional.ofNullable(record.get("monthly_income", Double.class));
+            }
+
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return Optional.empty();
+    }
+
+    @Override
+    public List<Double> findMonthlyIncomes(int userId) {
+        return null;
     }
 }

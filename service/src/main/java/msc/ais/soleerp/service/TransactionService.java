@@ -17,4 +17,7 @@ public interface TransactionService {
     int deleteTransactionById(int id, String tokenId);
 
     int updateTransactionById(int id, String tokenId, AISTransaction transaction);
+
+    Optional<Double> findLastMonthIncome(String tokenId);
+
 }

@@ -20,4 +20,7 @@ public interface TransactionDao {
 
     int updateTransactionById(int id, int userId, AISTransaction transaction);
 
+    Optional<Double> findLastMonthIncome(int userId);
+
+    List<Double> findMonthlyIncomes(int userId);
 }
