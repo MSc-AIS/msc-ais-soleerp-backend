@@ -3,6 +3,7 @@ package msc.ais.soleerp.service;
 import msc.ais.soleerp.db.DaoFactory;
 import msc.ais.soleerp.db.TransactionDao;
 import msc.ais.soleerp.model.AISTransaction;
+import msc.ais.soleerp.model.response.MonthlyIncomeResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,5 +47,10 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Optional<Double> findLastMonthIncome(String tokenId) {
         return transactionDao.findLastMonthIncome(userService.getUserByTokenId(tokenId));
+    }
+
+    @Override
+    public List<MonthlyIncomeResponse> findMonthlyIncomes(String tokenId) {
+        return transactionDao.findMonthlyIncomes(userService.getUserByTokenId(tokenId));
     }
 }

@@ -1,6 +1,7 @@
 package msc.ais.soleerp.db;
 
 import msc.ais.soleerp.model.AISTransaction;
+import msc.ais.soleerp.model.response.MonthlyIncomeResponse;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,5 +23,5 @@ public interface TransactionDao {
 
     Optional<Double> findLastMonthIncome(int userId);
 
-    List<Double> findMonthlyIncomes(int userId);
+    List<MonthlyIncomeResponse> findMonthlyIncomes(int userId);
 }

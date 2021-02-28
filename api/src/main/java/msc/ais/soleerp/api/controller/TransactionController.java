@@ -46,4 +46,9 @@ public class TransactionController {
                 ctx.json(income);
                 ctx.status(HttpStatus.OK_200);
             }, () -> ctx.status(HttpStatus.NOT_FOUND_404));
+
+    public static Handler getMonthlyIncomes =
+        ctx -> ctx.json(ServiceFactory.createTransactionService()
+            .findMonthlyIncomes(ctx.queryParam("tokenId")));
+
 }

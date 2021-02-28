@@ -36,6 +36,7 @@ public class Application {
 
         app.get(baseURL + "/transactions", TransactionController.getTransactions);
         app.get(baseURL + "/transactions/income/last-month", TransactionController.getLastMonthIncome);
+        app.get(baseURL + "/transactions/income/monthly", TransactionController.getMonthlyIncomes);
         app.get(baseURL + "/transaction/id/:id", TransactionController.getTransactionById);
         app.delete(baseURL + "/transaction/id/:id", TransactionController.deleteTransactionById);
 

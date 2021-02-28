@@ -9,11 +9,13 @@ import msc.ais.soleerp.db.jooq.generated.tables.TransactionItems;
 import msc.ais.soleerp.db.jooq.generated.tables.records.TransactionRecord;
 import msc.ais.soleerp.db.util.ModelExtractor;
 import msc.ais.soleerp.model.AISTransaction;
+import msc.ais.soleerp.model.response.MonthlyIncomeResponse;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -189,7 +191,42 @@ public class PostgresTransactionDao implements TransactionDao, ModelExtractor {
     }
 
     @Override
-    public List<Double> findMonthlyIncomes(int userId) {
-        return null;
+    public List<MonthlyIncomeResponse> findMonthlyIncomes(int userId) {
+
+        List<MonthlyIncomeResponse> monthlyIncomeResponseList = new ArrayList<>();
+
+        try (Connection connection = DBCPDataSource.getConnection()) {
+
+            DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
+            Transaction t = Transaction.TRANSACTION;
+            Entity e = Entity.ENTITY;
+
+            Result<Record2<LocalDate, BigDecimal>> records =
+                context
+                    .select(
+                        DSL.localDate(DSL.trunc(t.DATE_CREATED, DatePart.MONTH)).as("income_to_month"),
+                        DSL.sum(t.TOTAL_PRICE).as("income"))
+                    .from(t
+                        .join(e).on(t.ENTITY_ID.eq(e.ENTITY_ID)))
+                    .where(e.USER_ID.eq(userId))
+                    .groupBy(DSL.trunc(t.DATE_CREATED, DatePart.MONTH))
+                    .orderBy(1)
+                    .fetch();
+
+            records.forEach(record ->
+                monthlyIncomeResponseList.add(
+                    MonthlyIncomeResponse.builder()
+                        .income(record.get("income", Double.class))
+                        .localDate(record.get("income_to_month", LocalDate.class))
+                        .build()));
+
+            LOGGER.info("Monthly incomes: " + monthlyIncomeResponseList.toString());
+
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return monthlyIncomeResponseList;
+
     }
 }

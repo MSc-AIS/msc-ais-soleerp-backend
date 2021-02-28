@@ -1,6 +1,7 @@
 package msc.ais.soleerp.service;
 
 import msc.ais.soleerp.model.AISTransaction;
+import msc.ais.soleerp.model.response.MonthlyIncomeResponse;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,5 +20,7 @@ public interface TransactionService {
     int updateTransactionById(int id, String tokenId, AISTransaction transaction);
 
     Optional<Double> findLastMonthIncome(String tokenId);
+
+    List<MonthlyIncomeResponse> findMonthlyIncomes(String tokenId);
 
 }
